@@ -8,7 +8,7 @@
   	<field name="reference"/>
   </grid>
   
-  <form model="com.axelor.event.registration.db.Event" title="Event" name="event-form" width="large">
+  <form model="com.axelor.event.registration.db.Event" title="Event" name="event-form" width="large" onSave="action-event-method-on-save">
   	<panel name="event-panel" title="Event">
   		<field name="reference"/>
   		<field name="startDate"/>
@@ -35,5 +35,9 @@
   <action-attrs name="action-event-attrs-event-registration-list-on-change">
   	<attribute name="value" for="totalEntry" expr="eval: eventRegistrationList.size()"/>
   </action-attrs>
+  
+  <action-method name="action-event-method-on-save">
+  	<call class="com.axelor.event.registration.db.web.EventController" method="validation"/>
+  </action-method>
   
   </object-views>
