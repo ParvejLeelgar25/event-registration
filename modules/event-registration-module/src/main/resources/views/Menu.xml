@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<object-views xmlns="http://axelor.com/xml/ns/object-views"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://axelor.com/xml/ns/object-views
+  http://axelor.com/xml/ns/object-views/object-views_5.0.xsd">
+  
+  <menuitem title="Event Registration" name="event-registration-root" />
+  
+  <menuitem title="Event" name="event-registration-root-event" parent="event-registration-root" action="event.registration.root.event"/>
+  
+  <action-view name="event.registration.root.event" title="Event"
+		model="com.axelor.event.registration.db.Event">
+		<view type="grid" name="event-grid" />
+		<view type="form" name="event-form" />
+	</action-view>
+	
+  <menuitem title="Event Registration" name="event-registration-root-event-registration" parent="event-registration-root" action="event.registration.root.event.registration"/>
+  
+  <action-view name="event.registration.root.event.registration" title="Event Registration"
+		model="com.axelor.event.registration.db.EventRegistration">
+		<view type="grid" name="event-registration-grid" />
+		<view type="form" name="event-registration-form" />
+	</action-view>
+	
+  <menuitem title="Address" name="event-registration-root-address" parent="event-registration-root" action="event.registration.root.address"/>
+  
+  <action-view name="event.registration.root.address" title="Address"
+		model="com.axelor.event.registration.db.Address">
+		<view type="grid" name="address-grid" />
+		<view type="form" name="address-form" />
+	</action-view>
+	
+  <menuitem title="Discount" name="event-registration-root-discount" parent="event-registration-root" action="event.registration.root.discount"/>
+  
+  <action-view name="event.registration.root.discount" title="Discount"
+		model="com.axelor.event.registration.db.Discount">
+		<view type="grid" name="discount-grid" />
+		<view type="form" name="discount-form" />
+	</action-view>
+  </object-views>
