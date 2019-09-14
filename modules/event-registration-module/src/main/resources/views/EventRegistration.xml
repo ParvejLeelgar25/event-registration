@@ -8,7 +8,7 @@
   	<field name="name"/>
   </grid>
   
-  <form model="com.axelor.event.registration.db.EventRegistration" title="Event Registration" name="event-registration-form">
+  <form model="com.axelor.event.registration.db.EventRegistration" title="Event Registration" name="event-registration-form" onSave="action-event-registration-nethod-on-save">
   	<panel name="event-registration-panel" title="Event Registration">
   		<field name="name"/>
   		<field name="email" pattern="^[a-z0-9A-ZáàâäãåçéèêëíìîïñóòôöõúùûüýÿæœÁÀÂÄÃÅÇÉÈÊËÍÌÎÏÑÓÒÔÖÕÚÙÛÜÝŸÆŒ!#$%&amp;'*+/=?^_`{|}~-]+(?:\.[a-z0-9A-ZáàâäãåçéèêëíìîïñóòôöõúùûüýÿæœÁÀÂÄÃÅÇÉÈÊËÍÌÎÏÑÓÒÔÖÕÚÙÛÜÝŸÆŒ!#$%&amp;'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+(?:[a-z]{2,})$"/>
@@ -19,5 +19,9 @@
   	</panel>
   	
   </form>
+  
+  <action-method name="action-event-registration-nethod-on-save">
+  	<call class="com.axelor.event.registration.db.web.EventRegistrationController" method="validation"/>
+  </action-method>
   
   </object-views>
