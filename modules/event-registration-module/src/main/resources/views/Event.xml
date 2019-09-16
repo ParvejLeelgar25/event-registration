@@ -12,10 +12,10 @@
   	<panel name="event-panel" title="Event">
   		<field name="reference"/>
   		<field name="address" form-view="address-form" canNew="true"/>
-  		<field name="startDate" onChange="action-event-method-date-on-change"/>
-  		<field name="endDate" onChange="action-event-method-date-on-change"/>
-  		<field name="registrationOpen" onChange="action-event-method-date-on-change"/>
-  		<field name="registrationClose" onChange="action-event-method-date-on-change"/>
+  		<field name="startDate" onChange="action-event-method-date-on-change" readonlyIf="eventRegistrationList.length > 0"/>
+  		<field name="endDate" onChange="action-event-method-date-on-change" readonlyIf="eventRegistrationList.length > 0"/>
+  		<field name="registrationOpen" onChange="action-event-method-date-on-change" readonlyIf="eventRegistrationList.length > 0"/>
+  		<field name="registrationClose" onChange="action-event-method-date-on-change" readonlyIf="eventRegistrationList.length > 0"/>
   		<field name="capacity"/>
   		<field name="eventFees"/>
   		<field name="description" widget="html"/>
@@ -24,7 +24,7 @@
   		<field name="totalDiscount"/>
   	</panel>
   	
-  	<panel-related field="eventRegistrationList" name="event-registration-list-panel" form-view="event-registration-form" grid-view="event-registration-grid" title="Event Registration"/>
+  	<panel-related field="eventRegistrationList" name="event-registration-list-panel" form-view="event-registration-form" grid-view="event-registration-grid" title="Event Registration" hidden="true" showIf="startDate != null &amp;&amp; endDate != null &amp;&amp; registrationOpen != null &amp;&amp; registrationClose != null"  onChange="action-event-attrs-event-registration-list-on-change"/>
   	
   	<panel-related field="discountList" name="discount-list-panel" form-view="discount-form" grid-view="discount-grid" title="Discount" onChange="action-event-method-discount-list-on-change"/>
   </form>
