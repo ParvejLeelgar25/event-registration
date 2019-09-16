@@ -16,7 +16,7 @@ public class EventRegistrationController {
 		if(eventRegistration.getRegistrationDate() != null && eventRegistration.getEvent() != null) {
 			Event event = eventRegistration.getEvent();
 			LocalDate registrationDate = eventRegistration.getRegistrationDate().toLocalDate();
-			if (event.getCapacity() < event.getTotalEntry()) {
+			if (event.getCapacity() < (event.getTotalEntry() + 1)) {
 				response.setError(I18n.get(ITranslation.CAPACITY_EXCEED));
 			} else {
 				LocalDate registrationOpen = event.getRegistrationOpen();

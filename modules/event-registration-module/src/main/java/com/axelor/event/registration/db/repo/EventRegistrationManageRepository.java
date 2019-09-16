@@ -26,7 +26,7 @@ public class EventRegistrationManageRepository extends EventRegistrationReposito
 
 	@Override
 	public void remove(EventRegistration entity) {
-
+		
 		if (entity.getEvent() != null) {
 			Event event = entity.getEvent();
 			EventRepository eventRepository = Beans.get(EventRepository.class);

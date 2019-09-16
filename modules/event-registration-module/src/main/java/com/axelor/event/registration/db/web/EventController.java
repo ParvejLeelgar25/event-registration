@@ -75,4 +75,26 @@ public class EventController {
 			}
 		}
 	}
+
+	public void validationOnDiscountList(ActionRequest request, ActionResponse response) {
+		Event event = request.getContext().asType(Event.class);
+		LocalDate registrationOpen = event.getRegistrationOpen();
+		LocalDate registrationClose = event.getRegistrationClose();
+		long days = ChronoUnit.DAYS.between(registrationOpen, registrationClose) + 1;
+		
+		if (event.getDiscountList() != null) {
+			List<Discount> discountList = event.getDiscountList();
+			int count = discountList.size() - 1;
+			for (Discount discount : discountList) {
+				long beforeDays = discount.getBeforeDays();
+				if (beforeDays > days) {
+					response.setFlash(I18n.get(ITranslation.BEFORE_DAYS));
+					discountList.remove(count);
+					event.setDiscountList(event.getDiscountList());
+					response.setValue("discountList", event.getDiscountList());
+					break;
+				}
+			}
+		}
+	}
 }
