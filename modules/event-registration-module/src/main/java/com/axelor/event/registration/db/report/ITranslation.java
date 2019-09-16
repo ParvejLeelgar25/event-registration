@@ -4,7 +4,7 @@ public interface ITranslation {
 
 	public static final String CAPACITY_EXCEED = /*$$(*/ "Registration Can't Exceed Capacity"; /*)*/
 	
-	public static final String DATE_BETWEEN = /*$$(*/ "Registration Date Can not between Event registration open and registration close"; /*)*/
+	public static final String DATE_BETWEEN = /*$$(*/ "Registration Date must between Event registration open and registration close"; /*)*/
 	
 	public static final String MISSING_FIELD = /*$$(*/ "Please fill Registration Date and Event field"; /*)*/
 	

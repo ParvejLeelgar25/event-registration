@@ -28,8 +28,8 @@ public class EventController {
 					if (eventRegistration.getRegistrationDate() != null) {
 						LocalDate registrationDate = eventRegistration.getRegistrationDate().toLocalDate();
 						if (registrationOpen != null && registrationClose != null && registrationDate != null
-								&& registrationDate.isBefore(registrationClose)
-								&& registrationDate.isAfter(registrationOpen)) {
+								&& registrationDate.isBefore(registrationOpen)
+								|| registrationDate.isAfter(registrationClose)) {
 							response.setError(I18n.get(ITranslation.DATE_BETWEEN));
 						}
 					} else {
@@ -81,7 +81,7 @@ public class EventController {
 		LocalDate registrationOpen = event.getRegistrationOpen();
 		LocalDate registrationClose = event.getRegistrationClose();
 		long days = ChronoUnit.DAYS.between(registrationOpen, registrationClose) + 1;
-		
+
 		if (event.getDiscountList() != null) {
 			List<Discount> discountList = event.getDiscountList();
 			int count = discountList.size() - 1;
@@ -96,5 +96,20 @@ public class EventController {
 				}
 			}
 		}
+	}
+
+	public void setAmount(ActionRequest request, ActionResponse response) {
+		Event event = request.getContext().asType(Event.class);
+		if (event.getEventRegistrationList() != null) {
+			List<EventRegistration> eventRegistrationsList = event.getEventRegistrationList();
+			int count = eventRegistrationsList.size() - 1;
+			if (event.getCapacity() < event.getTotalEntry() + 1) {
+				response.setFlash(I18n.get(ITranslation.CAPACITY_EXCEED));
+				eventRegistrationsList.remove(count);
+				event.setEventRegistrationList(eventRegistrationsList);
+				response.setValue("eventRegistrationList", event.getEventRegistrationList());
+			}
+		}
+
 	}
 }

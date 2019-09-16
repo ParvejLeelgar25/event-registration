@@ -27,7 +27,7 @@
 "Registration Can't Exceed Capacity",,,
 "Registration Close",,,
 "Registration Date",,,
-"Registration Date Can not between Event registration open and registration close",,,
+"Registration Date must between Event registration open and registration close",,,
 "Registration Open",,,
 "Registration Open should not be ahead of registration close",,,
 "Registration close date must be before event start date",,,

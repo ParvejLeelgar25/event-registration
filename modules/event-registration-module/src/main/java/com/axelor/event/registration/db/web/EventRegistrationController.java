@@ -22,7 +22,7 @@ public class EventRegistrationController {
 				LocalDate registrationOpen = event.getRegistrationOpen();
 				LocalDate registrationClose = event.getRegistrationClose();
 				if (registrationOpen != null && registrationClose != null && registrationDate != null
-						&& registrationDate.isBefore(registrationClose) && registrationDate.isAfter(registrationOpen)) {
+						&& registrationDate.isBefore(registrationOpen) || registrationDate.isAfter(registrationClose)) {
 					response.setError(I18n.get(ITranslation.DATE_BETWEEN));
 				}
 			}
