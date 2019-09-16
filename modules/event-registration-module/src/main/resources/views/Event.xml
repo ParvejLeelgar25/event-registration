@@ -11,14 +11,11 @@
   <form model="com.axelor.event.registration.db.Event" title="Event" name="event-form" width="large" onSave="action-event-method-on-save">
   	<panel name="event-panel" title="Event">
   		<field name="reference"/>
-  		<field name="startDate"/>
-  		<field name="endDate"/>
-  		<static name="$text" hidden="true" showIf="startDate != null &amp;&amp; endDate != null &amp;&amp; $moment(startDate) &gt; $moment(endDate)" colSpan="12"><![CDATA[<span class='label label-warning'>Start Date must before End Date.</span>]]></static>
   		<field name="address" form-view="address-form" canNew="true"/>
-  		<field name="registrationOpen"/>
-  		<field name="registrationClose"/>
-  		<static name="$text1" hidden="true" showIf="registrationOpen != null &amp;&amp; registrationClose != null &amp;&amp; $moment(registrationOpen) &gt; $moment(registrationClose)" colSpan="12"><![CDATA[<span class='label label-warning'>Registration Open must before Registration close.</span>]]></static>
-  		<static name="$text2" hidden="true" showIf="startDate != null &amp;&amp; registrationClose != null &amp;&amp; $moment(startDate) &lt; $moment(registrationClose)" colSpan="12"><![CDATA[<span class='label label-warning'>Event start date must after Registration close date</span>]]></static>
+  		<field name="startDate" onChange="action-event-method-date-on-change"/>
+  		<field name="endDate" onChange="action-event-method-date-on-change"/>
+  		<field name="registrationOpen" onChange="action-event-method-date-on-change"/>
+  		<field name="registrationClose" onChange="action-event-method-date-on-change"/>
   		<field name="capacity"/>
   		<field name="eventFees"/>
   		<field name="description" widget="html"/>
@@ -27,9 +24,9 @@
   		<field name="totalDiscount"/>
   	</panel>
   	
-  	<panel-related field="eventRegistrationList" name="event-registration-list-panel" form-view="event-registration-form" grid-view="event-registration-grid" title="Event Registration" onChange="action-event-attrs-event-registration-list-on-change"/>
+  	<panel-related field="eventRegistrationList" name="event-registration-list-panel" form-view="event-registration-form" grid-view="event-registration-grid" title="Event Registration"/>
   	
-  	<panel-related field="discountList" name="discount-list-panel" form-view="discount-form" grid-view="discount-grid" title="Discount"/>
+  	<panel-related field="discountList" name="discount-list-panel" form-view="discount-form" grid-view="discount-grid" title="Discount" onChange="action-event-method-discount-list-on-change"/>
   </form>
   
   <action-attrs name="action-event-attrs-event-registration-list-on-change">
@@ -40,4 +37,8 @@
   	<call class="com.axelor.event.registration.db.web.EventController" method="validation"/>
   </action-method>
   
+  <action-method name="action-event-method-date-on-change">
+  	<call class="com.axelor.event.registration.db.web.EventController" method="dateValidation"/>
+  </action-method>
+    
   </object-views>
