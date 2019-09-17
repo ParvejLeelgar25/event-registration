@@ -25,6 +25,7 @@ public class EventRegistrationModule extends AxelorModule{
 		bind(EventRepository.class).to(EventManageRepository.class);
 		bind(EventService.class).to(EventServiceImpl.class);
 		bind(EventRegistrationService.class).to(EventRegistrationServiceImpl.class);
+		
 	}
 
 }

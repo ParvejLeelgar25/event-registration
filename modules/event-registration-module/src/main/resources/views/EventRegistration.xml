@@ -16,6 +16,7 @@
   		<field name="event" hideIf="$popup()" canNew="true" onChange="action-event-registration-group-registration-date-on-change"/>
   		<field name="address" canNew="true"/>
   		<field name="amount"/>
+  		<field name="isSendEmail"/>
   	</panel>
   </form>
   

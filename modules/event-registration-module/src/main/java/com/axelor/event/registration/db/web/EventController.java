@@ -1,5 +1,6 @@
 package com.axelor.event.registration.db.web;
 
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -8,20 +9,34 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
+import javax.mail.MessagingException;
+
+import com.axelor.apps.message.db.EmailAddress;
+import com.axelor.apps.message.db.Message;
+import com.axelor.apps.message.db.repo.EmailAccountRepository;
+import com.axelor.apps.message.db.repo.EmailAddressRepository;
+import com.axelor.apps.message.service.MessageService;
 import com.axelor.event.registration.db.Discount;
 import com.axelor.event.registration.db.Event;
 import com.axelor.event.registration.db.EventRegistration;
 import com.axelor.event.registration.db.report.ITranslation;
 import com.axelor.event.registration.db.service.EventService;
+import com.axelor.exception.AxelorException;
 import com.axelor.i18n.I18n;
+import com.axelor.inject.Beans;
 import com.axelor.rpc.ActionRequest;
 import com.axelor.rpc.ActionResponse;
 import com.google.inject.Inject;
 
+
 public class EventController {
 	@Inject private EventService eventService;
+	@Inject private MessageService messageService;
+	
 	public void validation(ActionRequest request, ActionResponse response) {
 		Event event = request.getContext().asType(Event.class);
 		if (event.getCapacity() < event.getTotalEntry()) {
@@ -145,4 +160,31 @@ public class EventController {
 		response.setValue("amountCollected", event.getAmountCollected());
 		response.setValue("totalDiscount", event.getTotalDiscount());
 	}
+	
+	public void sendEmail(ActionRequest request, ActionResponse response) throws MessagingException, IOException, AxelorException {
+		
+		Event event = request.getContext().asType(Event.class);
+		Set<EmailAddress> emailAddressSet = new HashSet<EmailAddress>();
+		if(event.getEventRegistrationList() != null) {
+			for(EventRegistration eventRegistration : event.getEventRegistrationList()) {
+				if(eventRegistration.getEmail() != null && !(eventRegistration.getIsSendEmail())) {
+					EmailAddress emailAddress = new EmailAddress();
+					emailAddress.setAddress(eventRegistration.getEmail());
+					emailAddressSet.add(emailAddress);
+					eventRegistration.setIsSendEmail(true);
+				}
+			}
+		}
+		
+		if (!emailAddressSet.isEmpty()) {
+			Message message = new Message();
+			message.setMailAccount(Beans.get(EmailAccountRepository.class).all().fetchOne());
+			message.setContent("This is Regisgration Information mail");
+			message.setToEmailAddressSet(emailAddressSet);
+			message.setSubject("Registration Regarding");
+			
+			messageService.sendByEmail(message);
+		}
+	}
 }
+

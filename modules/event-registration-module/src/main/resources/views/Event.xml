@@ -11,6 +11,7 @@
   <form model="com.axelor.event.registration.db.Event" title="Event" name="event-form" width="large" onSave="action-event-method-on-save">
   <toolbar>
   	<button name="reportbtn" onClick="save,action-event-report-reportbtn-on-click" title="Report"/>
+  	<button name="sendEmail" onClick="action-event-method-send-email" title="Send Email"/>
   </toolbar>
   	<panel name="event-panel" title="Event">
   		<field name="reference"/>
@@ -59,6 +60,10 @@
   <action-report output="Event" name="action-event-report-reportbtn-on-click" design="event.rptdesign">
   	<param name="id" expr="eval: id" />
   </action-report>
+  
+  <action-method name="action-event-method-send-email">
+  	<call class="com.axelor.event.registration.db.web.EventController" method="sendEmail"/>
+  </action-method>
   
 <!--   <action-validate name="action-event-validate-on-discount-list">
   	<error message="Exceed duration between open and close registration dates" if="java.time.temporal.ChronoUnit.DAYS.between(registrationOpen, registrationClose) &gt;= beforeDays" action="action-attr"/>

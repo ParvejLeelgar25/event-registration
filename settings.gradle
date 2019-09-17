@@ -17,3 +17,6 @@ include 'services:webservice'
 
 rootProject.name = 'event-registration'
 include "modules:event-registration-module"
+include "modules:axelor-message"
+include "modules:axelor-tool"
+include "modules:axelor-exception"
