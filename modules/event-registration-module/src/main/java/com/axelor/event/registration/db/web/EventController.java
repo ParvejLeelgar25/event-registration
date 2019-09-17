@@ -135,4 +135,23 @@ public class EventController {
 			}
 		}
 	}
+	
+	public void eventCalculation(ActionRequest request, ActionResponse response) {
+		BigDecimal amountCollected = BigDecimal.ZERO;
+		BigDecimal totalDiscount = BigDecimal.ZERO;
+		int temp;
+		Event event = request.getContext().asType(Event.class);
+		if(event.getEventRegistrationList() != null) {
+			List<EventRegistration> eventRegistrationsList = event.getEventRegistrationList();
+			for(EventRegistration eventRegistration : eventRegistrationsList) {
+				amountCollected = amountCollected.add(eventRegistration.getAmount());
+			}
+			
+			temp = event.getEventRegistrationList().size();
+			totalDiscount = (event.getEventFees().multiply(BigDecimal.valueOf(temp))).subtract(amountCollected);
+			
+			response.setValue("amountCollected", amountCollected);
+			response.setValue("totalDiscount", totalDiscount);
+		}
+	}
 }

@@ -24,7 +24,7 @@
   		<field name="totalDiscount"/>
   	</panel>
   	
-  	<panel-related field="eventRegistrationList" name="event-registration-list-panel" form-view="event-registration-form" grid-view="event-registration-grid" title="Event Registration" hidden="true" showIf="startDate != null &amp;&amp; endDate != null &amp;&amp; registrationOpen != null &amp;&amp; registrationClose != null" onChange="action-event-method-event-registration-list-on-change,action-event-attrs-event-registration-list-on-change"/>
+  	<panel-related field="eventRegistrationList" name="event-registration-list-panel" form-view="event-registration-form" grid-view="event-registration-grid" title="Event Registration" hidden="true" showIf="startDate != null &amp;&amp; endDate != null &amp;&amp; registrationOpen != null &amp;&amp; registrationClose != null" onChange="action-event-method-event-registration-list-on-change,action-event-attrs-event-registration-list-on-change,action-event-method-event-registration-list-on-change-event-calculation"/>
   	
   	<panel-related field="discountList" name="discount-list-panel" form-view="discount-form" grid-view="discount-grid" title="Discount" hidden="true" showIf="startDate != null &amp;&amp; endDate != null &amp;&amp; registrationOpen != null &amp;&amp; registrationClose != null" onChange="action-event-method-discount-list-on-change"/>
   </form>
@@ -47,6 +47,10 @@
   
   <action-method name="action-event-method-discount-list-on-change">
   	<call class="com.axelor.event.registration.db.web.EventController" method="validationOnDiscountList"/>
+  </action-method>
+  
+  <action-method name="action-event-method-event-registration-list-on-change-event-calculation">
+  	<call class="com.axelor.event.registration.db.web.EventController" method="eventCalculation"/>
   </action-method>
   
 <!--   <action-validate name="action-event-validate-on-discount-list">
