@@ -14,12 +14,14 @@ import com.axelor.event.registration.db.Discount;
 import com.axelor.event.registration.db.Event;
 import com.axelor.event.registration.db.EventRegistration;
 import com.axelor.event.registration.db.report.ITranslation;
+import com.axelor.event.registration.db.service.EventService;
 import com.axelor.i18n.I18n;
 import com.axelor.rpc.ActionRequest;
 import com.axelor.rpc.ActionResponse;
+import com.google.inject.Inject;
 
 public class EventController {
-
+	@Inject private EventService eventService;
 	public void validation(ActionRequest request, ActionResponse response) {
 		Event event = request.getContext().asType(Event.class);
 		if (event.getCapacity() < event.getTotalEntry()) {
@@ -137,21 +139,10 @@ public class EventController {
 	}
 	
 	public void eventCalculation(ActionRequest request, ActionResponse response) {
-		BigDecimal amountCollected = BigDecimal.ZERO;
-		BigDecimal totalDiscount = BigDecimal.ZERO;
-		int temp;
+		
 		Event event = request.getContext().asType(Event.class);
-		if(event.getEventRegistrationList() != null) {
-			List<EventRegistration> eventRegistrationsList = event.getEventRegistrationList();
-			for(EventRegistration eventRegistration : eventRegistrationsList) {
-				amountCollected = amountCollected.add(eventRegistration.getAmount());
-			}
-			
-			temp = event.getEventRegistrationList().size();
-			totalDiscount = (event.getEventFees().multiply(BigDecimal.valueOf(temp))).subtract(amountCollected);
-			
-			response.setValue("amountCollected", amountCollected);
-			response.setValue("totalDiscount", totalDiscount);
-		}
+		eventService.eventCalculation(event);
+		response.setValue("amountCollected", event.getAmountCollected());
+		response.setValue("totalDiscount", event.getTotalDiscount());
 	}
 }

@@ -11,11 +11,16 @@ import com.axelor.event.registration.db.Discount;
 import com.axelor.event.registration.db.Event;
 import com.axelor.event.registration.db.EventRegistration;
 import com.axelor.event.registration.db.report.ITranslation;
+import com.axelor.event.registration.db.service.EventRegistrationService;
 import com.axelor.i18n.I18n;
 import com.axelor.rpc.ActionRequest;
 import com.axelor.rpc.ActionResponse;
+import com.google.inject.Inject;
 
 public class EventRegistrationController {
+
+	@Inject
+	private EventRegistrationService eventRegistrationService;
 
 	public void validation(ActionRequest request, ActionResponse response) {
 		EventRegistration eventRegistration = request.getContext().asType(EventRegistration.class);
@@ -38,7 +43,6 @@ public class EventRegistrationController {
 	}
 
 	public void calculation(ActionRequest request, ActionResponse response) {
-		System.out.println("cal");
 		EventRegistration eventRegistration = request.getContext().asType(EventRegistration.class);
 		Event event = request.getContext().getParent().asType(Event.class);
 
@@ -46,25 +50,12 @@ public class EventRegistrationController {
 		LocalDate registrationClose = event.getRegistrationClose();
 		LocalDateTime registrationDateTime = eventRegistration.getRegistrationDate();
 		if (registrationDateTime != null) {
-
+			eventRegistrationService.calculation(eventRegistration, event);
+			response.setValue("amount", eventRegistration.getAmount());
 			LocalDate registrationDate = registrationDateTime.toLocalDate();
 			if (registrationOpen != null && registrationClose != null && registrationDate != null
 					&& registrationDate.isBefore(registrationClose) && registrationDate.isAfter(registrationOpen)) {
-				if (event.getDiscountList() != null) {
-					List<Discount> discountList = event.getDiscountList();
-					long days = ChronoUnit.DAYS.between(registrationDate, registrationClose);
-					BigDecimal discountAmount = BigDecimal.ZERO;
-					for (Discount discount : discountList) {
-						if (discount.getBeforeDays() <= days
-								&& discount.getDiscountAmount().compareTo(discountAmount) == 1) {
-							discountAmount = discount.getDiscountAmount();
-						}
-					}
-					response.setValue("amount", event.getEventFees().subtract(discountAmount));
 
-				} else {
-					response.setValue("amount", event.getEventFees());
-				}
 			} else {
 				response.setError(I18n.get(ITranslation.DATE_BETWEEN));
 			}
@@ -72,12 +63,11 @@ public class EventRegistrationController {
 			response.setError(I18n.get(ITranslation.MISSING_REGISTRATION_DATE));
 		}
 	}
-	
+
 	public void calculationNoParent(ActionRequest request, ActionResponse response) {
-		System.out.println("ddddd");
 		EventRegistration eventRegistration = request.getContext().asType(EventRegistration.class);
-		if(eventRegistration.getEvent() != null) {
-			if(eventRegistration.getRegistrationDate() != null) {
+		if (eventRegistration.getEvent() != null) {
+			if (eventRegistration.getRegistrationDate() != null) {
 				Event event = eventRegistration.getEvent();
 				LocalDate registrationOpen = event.getRegistrationOpen();
 				LocalDate registrationClose = event.getRegistrationClose();
@@ -86,22 +76,10 @@ public class EventRegistrationController {
 
 					LocalDate registrationDate = registrationDateTime.toLocalDate();
 					if (registrationOpen != null && registrationClose != null && registrationDate != null
-							&& registrationDate.isBefore(registrationClose) && registrationDate.isAfter(registrationOpen)) {
-						if (event.getDiscountList() != null) {
-							List<Discount> discountList = event.getDiscountList();
-							long days = ChronoUnit.DAYS.between(registrationDate, registrationClose);
-							BigDecimal discountAmount = BigDecimal.ZERO;
-							for (Discount discount : discountList) {
-								if (discount.getBeforeDays() <= days
-										&& discount.getDiscountAmount().compareTo(discountAmount) == 1) {
-									discountAmount = discount.getDiscountAmount();
-								}
-							}
-							response.setValue("amount", event.getEventFees().subtract(discountAmount));
-
-						} else {
-							response.setValue("amount", event.getEventFees());
-						}
+							&& registrationDate.isBefore(registrationClose)
+							&& registrationDate.isAfter(registrationOpen)) {
+						eventRegistrationService.calculation(eventRegistration, event);
+						response.setValue("amount", eventRegistration.getAmount());
 					} else {
 						response.setError(I18n.get(ITranslation.DATE_BETWEEN));
 					}
@@ -115,7 +93,6 @@ public class EventRegistrationController {
 			response.setError(I18n.get(ITranslation.MISSING_FIELD));
 		}
 
-		
 	}
 
 }
