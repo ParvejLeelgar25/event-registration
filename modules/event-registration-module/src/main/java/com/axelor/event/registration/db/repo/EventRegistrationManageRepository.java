@@ -17,6 +17,8 @@ public class EventRegistrationManageRepository extends EventRegistrationReposito
 			EventRepository eventRepository = Beans.get(EventRepository.class);
 			List<EventRegistration> eventRegistrationList = event.getEventRegistrationList();
 			eventRegistrationList.add(entity);
+			event.setAmountCollected(entity.getAmount().add(event.getAmountCollected()));
+			event.setTotalDiscount(event.getTotalDiscount().add(event.getEventFees().subtract(entity.getAmount())));
 			event.setTotalEntry(event.getTotalEntry() + 1);
 			event.setEventRegistrationList(eventRegistrationList);
 			eventRepository.save(event);
@@ -43,6 +45,7 @@ public class EventRegistrationManageRepository extends EventRegistrationReposito
 			}
 			
 			event.setEventRegistrationList(eventRegistrationList);
+			
 			eventRepository.save(event);
 		}
 

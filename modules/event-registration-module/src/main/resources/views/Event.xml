@@ -9,6 +9,9 @@
   </grid>
   
   <form model="com.axelor.event.registration.db.Event" title="Event" name="event-form" width="large" onSave="action-event-method-on-save">
+  <toolbar>
+  	<button name="reportbtn" onClick="save,action-event-report-reportbtn-on-click" title="Report"/>
+  </toolbar>
   	<panel name="event-panel" title="Event">
   		<field name="reference"/>
   		<field name="address" form-view="address-form" canNew="true"/>
@@ -52,6 +55,10 @@
   <action-method name="action-event-method-event-registration-list-on-change-event-calculation">
   	<call class="com.axelor.event.registration.db.web.EventController" method="eventCalculation"/>
   </action-method>
+  
+  <action-report output="Event" name="action-event-report-reportbtn-on-click" design="event.rptdesign">
+  	<param name="id" expr="eval: id" />
+  </action-report>
   
 <!--   <action-validate name="action-event-validate-on-discount-list">
   	<error message="Exceed duration between open and close registration dates" if="java.time.temporal.ChronoUnit.DAYS.between(registrationOpen, registrationClose) &gt;= beforeDays" action="action-attr"/>
