@@ -38,6 +38,7 @@ public class EventRegistrationController {
 	}
 
 	public void calculation(ActionRequest request, ActionResponse response) {
+		System.out.println("cal");
 		EventRegistration eventRegistration = request.getContext().asType(EventRegistration.class);
 		Event event = request.getContext().getParent().asType(Event.class);
 
@@ -70,6 +71,51 @@ public class EventRegistrationController {
 		} else {
 			response.setError(I18n.get(ITranslation.MISSING_REGISTRATION_DATE));
 		}
+	}
+	
+	public void calculationNoParent(ActionRequest request, ActionResponse response) {
+		System.out.println("ddddd");
+		EventRegistration eventRegistration = request.getContext().asType(EventRegistration.class);
+		if(eventRegistration.getEvent() != null) {
+			if(eventRegistration.getRegistrationDate() != null) {
+				Event event = eventRegistration.getEvent();
+				LocalDate registrationOpen = event.getRegistrationOpen();
+				LocalDate registrationClose = event.getRegistrationClose();
+				LocalDateTime registrationDateTime = eventRegistration.getRegistrationDate();
+				if (registrationDateTime != null) {
+
+					LocalDate registrationDate = registrationDateTime.toLocalDate();
+					if (registrationOpen != null && registrationClose != null && registrationDate != null
+							&& registrationDate.isBefore(registrationClose) && registrationDate.isAfter(registrationOpen)) {
+						if (event.getDiscountList() != null) {
+							List<Discount> discountList = event.getDiscountList();
+							long days = ChronoUnit.DAYS.between(registrationDate, registrationClose);
+							BigDecimal discountAmount = BigDecimal.ZERO;
+							for (Discount discount : discountList) {
+								if (discount.getBeforeDays() <= days
+										&& discount.getDiscountAmount().compareTo(discountAmount) == 1) {
+									discountAmount = discount.getDiscountAmount();
+								}
+							}
+							response.setValue("amount", event.getEventFees().subtract(discountAmount));
+
+						} else {
+							response.setValue("amount", event.getEventFees());
+						}
+					} else {
+						response.setError(I18n.get(ITranslation.DATE_BETWEEN));
+					}
+				} else {
+					response.setError(I18n.get(ITranslation.MISSING_REGISTRATION_DATE));
+				}
+			} else {
+				response.setError(I18n.get(ITranslation.MISSING_FIELD));
+			}
+		} else {
+			response.setError(I18n.get(ITranslation.MISSING_FIELD));
+		}
+
+		
 	}
 
 }

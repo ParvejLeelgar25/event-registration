@@ -12,20 +12,28 @@
   	<panel name="event-registration-panel" title="Event Registration">
   		<field name="name"/>
   		<field name="email" pattern="^[a-z0-9A-ZáàâäãåçéèêëíìîïñóòôöõúùûüýÿæœÁÀÂÄÃÅÇÉÈÊËÍÌÎÏÑÓÒÔÖÕÚÙÛÜÝŸÆŒ!#$%&amp;'*+/=?^_`{|}~-]+(?:\.[a-z0-9A-ZáàâäãåçéèêëíìîïñóòôöõúùûüýÿæœÁÀÂÄÃÅÇÉÈÊËÍÌÎÏÑÓÒÔÖÕÚÙÛÜÝŸÆŒ!#$%&amp;'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+(?:[a-z]{2,})$"/>
-  		<field name="registrationDate" onChange="action-discount-method-registration-date-on-change"/>
-  		<field name="event" hideIf="$popup()" canNew="true"/>
+  		<field name="registrationDate" onChange="action-event-registration-group-registration-date-on-change"/>
+  		<field name="event" hideIf="$popup()" canNew="true" onChange="action-event-registration-group-registration-date-on-change"/>
   		<field name="address" canNew="true"/>
   		<field name="amount"/>
   	</panel>
-  	
   </form>
   
   <action-method name="action-event-registration-method-on-save">
   	<call class="com.axelor.event.registration.db.web.EventRegistrationController" method="validation"/>
   </action-method>
   
-  <action-method name="action-discount-method-registration-date-on-change">
+  <action-method name="action-event-registration-method-registration-date-on-change">
   	<call class="com.axelor.event.registration.db.web.EventRegistrationController" method="calculation"/>
   </action-method>
+  
+  <action-method name="action-event-registration-method-registration-date-on-change-no-parent">
+  	<call class="com.axelor.event.registration.db.web.EventRegistrationController" method="calculationNoParent"/>
+  </action-method>
+  
+  <action-group name="action-event-registration-group-registration-date-on-change">
+  	<action name="action-event-registration-method-registration-date-on-change" if="__parent__"/>
+  	<action name="action-event-registration-method-registration-date-on-change-no-parent" if="!__parent__"/>
+  </action-group>
   
   </object-views>
