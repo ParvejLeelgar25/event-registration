@@ -30,6 +30,7 @@
 "Registration Date must between Event registration open and registration close","La date d’inscription doit être comprise entre l’inscription ouverte et la clôture des inscriptions.",,
 "Registration Open",,,
 "Registration Open should not be ahead of registration close","L'inscription ouverte ne devrait pas être en avance sur la clôture des inscriptions",,
+"Registration Open should not be ahead of start date","L'inscription ouverte ne devrait pas être en avance sur la date de début",,
 "Registration close date must be before event start date","La date de clôture des inscriptions doit être antérieure à la date de début de l'événement",,
 "Start Date",,,
 "Street",,,

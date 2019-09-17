@@ -1,8 +1,12 @@
 package com.axelor.event.registration.db.web;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -74,17 +78,25 @@ public class EventController {
 				response.setValue("registrationClose", null);
 			}
 		}
+		
+		if(registrationOpen != null && startDate != null) {
+			if(registrationOpen.isAfter(startDate)) {
+				response.setFlash(I18n.get(ITranslation.START_DATE_BEFORE));
+				response.setValue("startDate", null);
+				response.setValue("registrationOpen", null);
+			}
+		}
 	}
 
 	public void validationOnDiscountList(ActionRequest request, ActionResponse response) {
 		Event event = request.getContext().asType(Event.class);
 		LocalDate registrationOpen = event.getRegistrationOpen();
 		LocalDate registrationClose = event.getRegistrationClose();
-		long days = ChronoUnit.DAYS.between(registrationOpen, registrationClose) + 1;
+		long days = ChronoUnit.DAYS.between(registrationOpen, registrationClose);
 
 		if (event.getDiscountList() != null) {
 			List<Discount> discountList = event.getDiscountList();
-			int count = discountList.size() - 1;
+			int count = discountList.size()-1;
 			for (Discount discount : discountList) {
 				long beforeDays = discount.getBeforeDays();
 				if (beforeDays > days) {
@@ -98,18 +110,29 @@ public class EventController {
 		}
 	}
 
-	public void setAmount(ActionRequest request, ActionResponse response) {
+	public void validationOnList(ActionRequest request, ActionResponse response) {
 		Event event = request.getContext().asType(Event.class);
 		if (event.getEventRegistrationList() != null) {
 			List<EventRegistration> eventRegistrationsList = event.getEventRegistrationList();
-			int count = eventRegistrationsList.size() - 1;
 			if (event.getCapacity() < event.getTotalEntry() + 1) {
-				response.setFlash(I18n.get(ITranslation.CAPACITY_EXCEED));
-				eventRegistrationsList.remove(count);
-				event.setEventRegistrationList(eventRegistrationsList);
-				response.setValue("eventRegistrationList", event.getEventRegistrationList());
+				response.setError(I18n.get(ITranslation.CAPACITY_EXCEED));
+			} else {
+				LocalDate registrationOpen = event.getRegistrationOpen();
+				LocalDate registrationClose = event.getRegistrationClose();
+				if(eventRegistrationsList.size() > 0) {
+					LocalDateTime registrationDateTime = event.getEventRegistrationList().get(eventRegistrationsList.size()-1).getRegistrationDate();
+					if (registrationDateTime != null) {
+						LocalDate registrationDate = registrationDateTime.toLocalDate();
+						if (registrationOpen != null && registrationClose != null && registrationDate != null
+								&& registrationDate.isBefore(registrationOpen)
+								|| registrationDate.isAfter(registrationClose)) {
+							response.setError(I18n.get(ITranslation.DATE_BETWEEN));
+						} 
+					} else {
+						response.setError(I18n.get(ITranslation.MISSING_REGISTRATION_DATE));
+					}
+				}	
 			}
 		}
-
 	}
 }

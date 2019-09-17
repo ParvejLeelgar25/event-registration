@@ -12,10 +12,10 @@
   	<panel name="event-panel" title="Event">
   		<field name="reference"/>
   		<field name="address" form-view="address-form" canNew="true"/>
-  		<field name="startDate" onChange="action-event-method-date-on-change" readonlyIf="eventRegistrationList.length > 0"/>
-  		<field name="endDate" onChange="action-event-method-date-on-change" readonlyIf="eventRegistrationList.length > 0" />
-  		<field name="registrationOpen" onChange="action-event-method-date-on-change" readonlyIf="eventRegistrationList.length > 0 || discountList.length > 0"/>
-  		<field name="registrationClose" onChange="action-event-method-date-on-change" readonlyIf="eventRegistrationList.length > 0 || discountList.length > 0"/>
+  		<field name="startDate" onChange="action-event-method-date-on-change" readonlyIf="startDate != null &amp;&amp; eventRegistrationList.length > 0"/>
+  		<field name="endDate" onChange="action-event-method-date-on-change" readonlyIf="endDate &amp;&amp; eventRegistrationList.length > 0" />
+  		<field name="registrationOpen" onChange="action-event-method-date-on-change" readonlyIf="registrationOpen &amp;&amp; eventRegistrationList.length > 0 &amp;&amp; discountList.length > 0"/>
+  		<field name="registrationClose" onChange="action-event-method-date-on-change" readonlyIf="registrationClose != null &amp;&amp; eventRegistrationList.length > 0 &amp;&amp; discountList.length > 0"/>
   		<field name="capacity" readonlyIf="eventRegistrationList.length > 0"/>
   		<field name="eventFees" readonlyIf="discountList.length > 0"/>
   		<field name="description" widget="html"/>
@@ -24,9 +24,9 @@
   		<field name="totalDiscount"/>
   	</panel>
   	
-  	<panel-related field="eventRegistrationList" name="event-registration-list-panel" form-view="event-registration-form" grid-view="event-registration-grid" title="Event Registration" hidden="true" showIf="startDate != null &amp;&amp; endDate != null &amp;&amp; registrationOpen != null &amp;&amp; registrationClose != null"  onChange="action-event-method-event-registration-list-on-change"/>
+  	<panel-related field="eventRegistrationList" name="event-registration-list-panel" form-view="event-registration-form" grid-view="event-registration-grid" title="Event Registration" hidden="true" showIf="startDate != null &amp;&amp; endDate != null &amp;&amp; registrationOpen != null &amp;&amp; registrationClose != null" onChange="action-event-method-event-registration-list-on-change,action-event-attrs-event-registration-list-on-change"/>
   	
-  	<panel-related field="discountList" name="discount-list-panel" form-view="discount-form" grid-view="discount-grid" title="Discount" hidden="true" showIf="startDate != null &amp;&amp; endDate != null &amp;&amp; registrationOpen != null &amp;&amp; registrationClose != null" onChange="action-event-method-discount-list-on-change,action-event-attrs-event-registration-list-on-change"/>
+  	<panel-related field="discountList" name="discount-list-panel" form-view="discount-form" grid-view="discount-grid" title="Discount" hidden="true" showIf="startDate != null &amp;&amp; endDate != null &amp;&amp; registrationOpen != null &amp;&amp; registrationClose != null" onChange="action-event-method-discount-list-on-change"/>
   </form>
   
   <action-attrs name="action-event-attrs-event-registration-list-on-change">
@@ -34,7 +34,7 @@
   </action-attrs>
   
   <action-method name="action-event-method-event-registration-list-on-change">
-  	<call class="com.axelor.event.registration.db.web.EventController" method="setAmount"/>
+  	<call class="com.axelor.event.registration.db.web.EventController" method="validationOnList"/>
   </action-method>
   
   <action-method name="action-event-method-on-save">

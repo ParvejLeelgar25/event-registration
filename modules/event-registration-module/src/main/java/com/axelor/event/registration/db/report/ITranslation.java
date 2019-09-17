@@ -17,5 +17,7 @@ public interface ITranslation {
 	public static final String REGISTRATION_CLOSE = /*$$(*/ "Registration close date must be before event start date"; /*)*/
 	
 	public static final String BEFORE_DAYS = /*$$(*/ "Exceed duration between open and close registration dates"; /*)*/
+	
+	public static final String START_DATE_BEFORE = /*$$(*/ "Registration Open should not be ahead of start date"; /*)*/
 
 }

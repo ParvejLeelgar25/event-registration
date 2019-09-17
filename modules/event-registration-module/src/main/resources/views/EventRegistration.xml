@@ -12,7 +12,7 @@
   	<panel name="event-registration-panel" title="Event Registration">
   		<field name="name"/>
   		<field name="email" pattern="^[a-z0-9A-ZáàâäãåçéèêëíìîïñóòôöõúùûüýÿæœÁÀÂÄÃÅÇÉÈÊËÍÌÎÏÑÓÒÔÖÕÚÙÛÜÝŸÆŒ!#$%&amp;'*+/=?^_`{|}~-]+(?:\.[a-z0-9A-ZáàâäãåçéèêëíìîïñóòôöõúùûüýÿæœÁÀÂÄÃÅÇÉÈÊËÍÌÎÏÑÓÒÔÖÕÚÙÛÜÝŸÆŒ!#$%&amp;'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+(?:[a-z]{2,})$"/>
-  		<field name="registrationDate"/>
+  		<field name="registrationDate" onChange="action-discount-method-registration-date-on-change"/>
   		<field name="event" hideIf="$popup()" canNew="true"/>
   		<field name="address" canNew="true"/>
   		<field name="amount"/>
@@ -22,6 +22,10 @@
   
   <action-method name="action-event-registration-method-on-save">
   	<call class="com.axelor.event.registration.db.web.EventRegistrationController" method="validation"/>
+  </action-method>
+  
+  <action-method name="action-discount-method-registration-date-on-change">
+  	<call class="com.axelor.event.registration.db.web.EventRegistrationController" method="calculation"/>
   </action-method>
   
   </object-views>

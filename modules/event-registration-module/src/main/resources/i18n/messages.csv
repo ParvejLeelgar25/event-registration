@@ -30,6 +30,7 @@
 "Registration Date must between Event registration open and registration close",,,
 "Registration Open",,,
 "Registration Open should not be ahead of registration close",,,
+"Registration Open should not be ahead of start date",,,
 "Registration close date must be before event start date",,,
 "Start Date",,,
 "Street",,,

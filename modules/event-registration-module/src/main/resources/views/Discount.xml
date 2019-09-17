@@ -21,5 +21,5 @@
   <action-attrs name="action-discount-attrs-discount-percent-on-change">
   	<attribute name="value" for="discountAmount" expr="eval: ((__parent__.eventFees)*discountPercent)/100"/>
   </action-attrs>
-  
+    
   </object-views>

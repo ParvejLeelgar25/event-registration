@@ -38,8 +38,10 @@ public class EventRegistrationManageRepository extends EventRegistrationReposito
 					break;
 				}
 				count++;
+			}if(event.getTotalEntry() > 0) {
+				event.setTotalEntry(event.getTotalEntry() - 1);
 			}
-			event.setTotalEntry(event.getTotalEntry() - 1);
+			
 			event.setEventRegistrationList(eventRegistrationList);
 			eventRepository.save(event);
 		}
