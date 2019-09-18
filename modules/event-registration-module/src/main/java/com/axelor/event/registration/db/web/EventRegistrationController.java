@@ -54,7 +54,6 @@ public class EventRegistrationController {
 			if (registrationOpen != null && registrationClose != null && registrationDate != null
 					&& registrationDate.isBefore(registrationClose) && registrationDate.isAfter(registrationOpen)) {
 				eventRegistrationService.calculation(eventRegistration, event);
-				System.out.println(eventRegistration.getAmount());
 				response.setValue("amount", eventRegistration.getAmount());
 			} else {
 				response.setError(I18n.get(ITranslation.DATE_BETWEEN));

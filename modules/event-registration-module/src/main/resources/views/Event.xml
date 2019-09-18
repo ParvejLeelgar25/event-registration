@@ -12,6 +12,7 @@
   <toolbar>
   	<button name="reportbtn" onClick="save,action-event-report-reportbtn-on-click" title="Report"/>
   	<button name="sendEmail" onClick="action-event-method-send-email" title="Send Email"/>
+  	<button name="importRegistrationbtn" onClick="action-event-method-import-registration-wizard" title="Import Registration"/>
   </toolbar>
   	<panel name="event-panel" title="Event">
   		<field name="reference"/>
@@ -31,6 +32,11 @@
   	<panel-related field="eventRegistrationList" name="event-registration-list-panel" form-view="event-registration-form" grid-view="event-registration-grid" title="Event Registration" hidden="true" showIf="startDate != null &amp;&amp; endDate != null &amp;&amp; registrationOpen != null &amp;&amp; registrationClose != null" onChange="action-event-method-event-registration-list-on-change,action-event-attrs-event-registration-list-on-change,action-event-method-event-registration-list-on-change-event-calculation"/>
   	
   	<panel-related field="discountList" name="discount-list-panel" form-view="discount-form" grid-view="discount-grid" title="Discount" hidden="true" showIf="startDate != null &amp;&amp; endDate != null &amp;&amp; registrationOpen != null &amp;&amp; registrationClose != null" onChange="action-event-method-discount-list-on-change"/>
+  </form>
+  
+  <form model="com.axelor.event.registration.db.Event" title="Import Registration" name="import-registration-form">
+  	<field name="metaFile" title="Input file" type="many-to-one" target="com.axelor.meta.db.MetaFile" widget="binary-link"/>
+  	<button name="importBtn" title="Import" readonlyIf="metaFile == null" onClick="action-event-method-import-button"/>
   </form>
   
   <action-attrs name="action-event-attrs-event-registration-list-on-change">
@@ -63,6 +69,24 @@
   
   <action-method name="action-event-method-send-email">
   	<call class="com.axelor.event.registration.db.web.EventController" method="sendEmail"/>
+  </action-method>
+  
+<!-- <action-view name="action-event-view-import-event-registration" title="Import Event Registration" model="com.axelor.meta.db.MetaFile">
+    	<view type="form" name="import-registration-form"/>
+    	<view-param name="show-toolbar" value="false"/>
+    	<view-param name="popup" value="true"/>
+    	<view-param name="show-confirm" value="false"/>
+  		<view-param name="popup-save" value="false"/>
+  		<view-param name="popup" value="reload"/>
+  		<context name="_event_id" expr="eval:id" />
+    </action-view> -->
+  
+  <action-method name="action-event-method-import-registration-wizard">
+  	<call class="com.axelor.event.registration.db.web.EventController" method="importRegistration"/>
+  </action-method>
+  
+  <action-method name="action-event-method-import-button">
+  	<call class="com.axelor.event.registration.db.web.EventController" method="importRegistrationData"/>
   </action-method>
   
 <!--   <action-validate name="action-event-validate-on-discount-list">

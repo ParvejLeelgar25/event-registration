@@ -1,7 +1,9 @@
 package com.axelor.event.registration.db.web;
 
+import java.io.File;
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.nio.file.Path;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
@@ -10,16 +12,22 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Set;
 
 import javax.mail.MessagingException;
+
+import org.apache.commons.lang3.ArrayUtils;
+import org.apache.poi.hslf.record.Sound;
 
 import com.axelor.apps.message.db.EmailAddress;
 import com.axelor.apps.message.db.Message;
 import com.axelor.apps.message.db.repo.EmailAccountRepository;
 import com.axelor.apps.message.db.repo.EmailAddressRepository;
 import com.axelor.apps.message.service.MessageService;
+import com.axelor.data.Importer;
+import com.axelor.data.csv.CSVImporter;
 import com.axelor.event.registration.db.Discount;
 import com.axelor.event.registration.db.Event;
 import com.axelor.event.registration.db.EventRegistration;
@@ -28,8 +36,13 @@ import com.axelor.event.registration.db.service.EventService;
 import com.axelor.exception.AxelorException;
 import com.axelor.i18n.I18n;
 import com.axelor.inject.Beans;
+import com.axelor.meta.MetaFiles;
+import com.axelor.meta.db.MetaFile;
+import com.axelor.meta.db.repo.MetaFileRepository;
+import com.axelor.meta.schema.actions.ActionView;
 import com.axelor.rpc.ActionRequest;
 import com.axelor.rpc.ActionResponse;
+import com.google.common.io.Files;
 import com.google.inject.Inject;
 
 
@@ -164,27 +177,39 @@ public class EventController {
 	public void sendEmail(ActionRequest request, ActionResponse response) throws MessagingException, IOException, AxelorException {
 		
 		Event event = request.getContext().asType(Event.class);
-		Set<EmailAddress> emailAddressSet = new HashSet<EmailAddress>();
-		if(event.getEventRegistrationList() != null) {
-			for(EventRegistration eventRegistration : event.getEventRegistrationList()) {
-				if(eventRegistration.getEmail() != null && !(eventRegistration.getIsSendEmail())) {
-					EmailAddress emailAddress = new EmailAddress();
-					emailAddress.setAddress(eventRegistration.getEmail());
-					emailAddressSet.add(emailAddress);
-					eventRegistration.setIsSendEmail(true);
-				}
-			}
-		}
+		eventService.sendEmail(event);
+	}
+	
+	public void importRegistration(ActionRequest request, ActionResponse response) {
+	    Event event = request.getContext().asType(Event.class);
+	    response.setView(
+                ActionView.define("Invoice")
+                    .model(Event.class.getName())
+                    .add("form", "import-registration-form")
+                    .context("event_id", event.getId())
+                    .param("popup", "true")
+                    .param("show-toolbar", "false")
+                    .param("show-confirm", "false")
+                    .param("popup-save", "false")
+                    .param("forceEdit", "true")
+                    .map());
+	}
+	
+	public void importRegistrationData(ActionRequest request, ActionResponse response) throws IOException {
 		
-		if (!emailAddressSet.isEmpty()) {
-			Message message = new Message();
-			message.setMailAccount(Beans.get(EmailAccountRepository.class).all().fetchOne());
-			message.setContent("This is Regisgration Information mail");
-			message.setToEmailAddressSet(emailAddressSet);
-			message.setSubject("Registration Regarding");
-			
-			messageService.sendByEmail(message);
-		}
+		Integer event_id = (Integer) request.getContext().get("event_id");
+		LinkedHashMap<String, Object> map = (LinkedHashMap<String, Object>) request.getContext().get("metaFile");
+		MetaFile dataFile = Beans.get(MetaFileRepository.class).find(((Integer) map.get("id")).longValue());
+		File file = MetaFiles.getPath(dataFile).toFile();
+		String dataFileArray[] = dataFile.getFileName().split("\\.");
+	    String dataFileType = dataFileArray[dataFileArray.length - 1];
+	    
+	     if(dataFileType.equals("csv")) {
+	    	eventService.importRegistrationData(event_id,dataFile);
+	    } else {
+	    	response.setError("Please Select CSV file");
+	    }
+	     response.setCanClose(true);
 	}
 }
 
