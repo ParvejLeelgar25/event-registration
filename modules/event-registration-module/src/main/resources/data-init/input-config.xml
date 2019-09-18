@@ -5,8 +5,7 @@
  http://axelor.com/xml/ns/data-import/data-import_5.0.xsd">
  
  <input file="ImportRegistration.csv" type="com.axelor.event.registration.db.EventRegistration">
+ 	<bind to="event" search="self.id = :_eventId" update="true"/>
  </input>
- 
- 
  
  </csv-inputs>

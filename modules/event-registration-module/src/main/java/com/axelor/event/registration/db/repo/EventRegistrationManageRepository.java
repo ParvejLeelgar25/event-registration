@@ -15,12 +15,12 @@ public class EventRegistrationManageRepository extends EventRegistrationReposito
 		if(entity.getEvent() != null) {
 			Event event = entity.getEvent();
 			EventRepository eventRepository = Beans.get(EventRepository.class);
-			List<EventRegistration> eventRegistrationList = event.getEventRegistrationList();
-			eventRegistrationList.add(entity);
+			/*List<EventRegistration> eventRegistrationList = event.getEventRegistrationList();*/
+			/*eventRegistrationList.add(entity);*/
 			event.setAmountCollected(entity.getAmount().add(event.getAmountCollected()));
 			event.setTotalDiscount(event.getTotalDiscount().add(event.getEventFees().subtract(entity.getAmount())));
 			event.setTotalEntry(event.getTotalEntry() + 1);
-			event.setEventRegistrationList(eventRegistrationList);
+			/*event.setEventRegistrationList(eventRegistrationList);*/
 			eventRepository.save(event);
 		}
 		return super.save(entity);
@@ -32,7 +32,7 @@ public class EventRegistrationManageRepository extends EventRegistrationReposito
 		if (entity.getEvent() != null) {
 			Event event = entity.getEvent();
 			EventRepository eventRepository = Beans.get(EventRepository.class);
-			int count = 0;
+			/*int count = 0;
 			List<EventRegistration> eventRegistrationList = event.getEventRegistrationList();
 			for (EventRegistration eventRegistration : eventRegistrationList) {
 				if (eventRegistration.getId() == entity.getId()) {
@@ -40,11 +40,11 @@ public class EventRegistrationManageRepository extends EventRegistrationReposito
 					break;
 				}
 				count++;
-			}if(event.getTotalEntry() > 0) {
+			}*/if(event.getTotalEntry() > 0) {
 				event.setTotalEntry(event.getTotalEntry() - 1);
 			}
 			
-			event.setEventRegistrationList(eventRegistrationList);
+			/*event.setEventRegistrationList(eventRegistrationList);*/
 			
 			eventRepository.save(event);
 		}

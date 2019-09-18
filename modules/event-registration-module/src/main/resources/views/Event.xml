@@ -12,7 +12,7 @@
   <toolbar>
   	<button name="reportbtn" onClick="save,action-event-report-reportbtn-on-click" title="Report"/>
   	<button name="sendEmail" onClick="action-event-method-send-email" title="Send Email"/>
-  	<button name="importRegistrationbtn" onClick="action-event-method-import-registration-wizard" title="Import Registration"/>
+  	<button name="importRegistrationbtn" onClick="action-event-view-import-event-registration" title="Import Registration"/>
   </toolbar>
   	<panel name="event-panel" title="Event">
   		<field name="reference"/>
@@ -71,7 +71,7 @@
   	<call class="com.axelor.event.registration.db.web.EventController" method="sendEmail"/>
   </action-method>
   
-<!-- <action-view name="action-event-view-import-event-registration" title="Import Event Registration" model="com.axelor.meta.db.MetaFile">
+<action-view name="action-event-view-import-event-registration" title="Import Event Registration" model="com.axelor.meta.db.MetaFile">
     	<view type="form" name="import-registration-form"/>
     	<view-param name="show-toolbar" value="false"/>
     	<view-param name="popup" value="true"/>
@@ -79,12 +79,8 @@
   		<view-param name="popup-save" value="false"/>
   		<view-param name="popup" value="reload"/>
   		<context name="_event_id" expr="eval:id" />
-    </action-view> -->
-  
-  <action-method name="action-event-method-import-registration-wizard">
-  	<call class="com.axelor.event.registration.db.web.EventController" method="importRegistration"/>
-  </action-method>
-  
+    </action-view>
+    
   <action-method name="action-event-method-import-button">
   	<call class="com.axelor.event.registration.db.web.EventController" method="importRegistrationData"/>
   </action-method>

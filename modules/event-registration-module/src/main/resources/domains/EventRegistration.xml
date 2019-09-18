@@ -14,6 +14,7 @@
 		<datetime name="registrationDate" title="Registration Date"/>
 		<decimal name="amount" readonly="true" title="Amount"/>
 		<boolean name="isSendEmail" title="Email Send" readonly="true"/>
+		
 	</entity>
 	
 </domain-models>

@@ -3,8 +3,10 @@ package com.axelor.event.registration.db.service;
 import java.io.File;
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import javax.mail.MessagingException;
@@ -75,17 +77,22 @@ public class EventServiceImpl implements EventService {
 	}
 
 	@Override
-	public void importRegistrationData(Integer event_id, MetaFile dataFile) throws IOException {
+	public void importRegistrationData(Integer eventId, MetaFile dataFile) throws IOException {
 
 		File csvFile = new File("/home/axelor/.axelor/attachments/", "ImportRegistration.csv");
 		if (dataFile != null) {
 			Files.copy(MetaFiles.getPath(dataFile).toFile(), csvFile);
 		}
-
+		Map<String, Object> importContext = new HashMap<String, Object>();
+		importContext.put("_eventId", eventId);
+		 
 		CSVImporter importer = new CSVImporter(
 				"/home/axelor/eclipse-workspace/Event Registration Workspace/event-registration/modules/event-registration-module/src/main/resources/data-init/input-config.xml",
 				csvFile.getParent());
+		importer.setContext(importContext);
 		importer.run();
+		
+		
 	}
 
 }

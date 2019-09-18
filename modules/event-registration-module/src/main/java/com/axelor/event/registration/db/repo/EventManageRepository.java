@@ -10,12 +10,12 @@ public class EventManageRepository extends EventRepository{
 	@Override
 	public Event save(Event entity) {
 		
-		if(entity.getEventRegistrationList() != null) {
+		/*if(entity.getEventRegistrationList() != null) {
 			List<EventRegistration> eventRegistrationList = entity.getEventRegistrationList();
 			for(EventRegistration eventRegistration : eventRegistrationList) {
 				eventRegistration.setEvent(entity);
 			}
-		}
+		}*/
 		return super.save(entity);
 	}
 

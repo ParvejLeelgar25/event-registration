@@ -180,24 +180,10 @@ public class EventController {
 		eventService.sendEmail(event);
 	}
 	
-	public void importRegistration(ActionRequest request, ActionResponse response) {
-	    Event event = request.getContext().asType(Event.class);
-	    response.setView(
-                ActionView.define("Invoice")
-                    .model(Event.class.getName())
-                    .add("form", "import-registration-form")
-                    .context("event_id", event.getId())
-                    .param("popup", "true")
-                    .param("show-toolbar", "false")
-                    .param("show-confirm", "false")
-                    .param("popup-save", "false")
-                    .param("forceEdit", "true")
-                    .map());
-	}
-	
 	public void importRegistrationData(ActionRequest request, ActionResponse response) throws IOException {
 		
-		Integer event_id = (Integer) request.getContext().get("event_id");
+		Integer eventId = (Integer) request.getContext().get("_event_id");
+		System.out.println(eventId);
 		LinkedHashMap<String, Object> map = (LinkedHashMap<String, Object>) request.getContext().get("metaFile");
 		MetaFile dataFile = Beans.get(MetaFileRepository.class).find(((Integer) map.get("id")).longValue());
 		File file = MetaFiles.getPath(dataFile).toFile();
@@ -205,7 +191,7 @@ public class EventController {
 	    String dataFileType = dataFileArray[dataFileArray.length - 1];
 	    
 	     if(dataFileType.equals("csv")) {
-	    	eventService.importRegistrationData(event_id,dataFile);
+	    	eventService.importRegistrationData(eventId,dataFile);
 	    } else {
 	    	response.setError("Please Select CSV file");
 	    }
