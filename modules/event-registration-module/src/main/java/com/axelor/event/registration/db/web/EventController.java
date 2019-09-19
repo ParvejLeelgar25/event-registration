@@ -144,7 +144,7 @@ public class EventController {
 		Event event = request.getContext().asType(Event.class);
 		if (event.getEventRegistrationList() != null) {
 			List<EventRegistration> eventRegistrationsList = event.getEventRegistrationList();
-			if (event.getCapacity() < event.getTotalEntry() + 1) {
+			if (event.getCapacity() < event.getEventRegistrationList().size()) {
 				response.setError(I18n.get(ITranslation.CAPACITY_EXCEED));
 			} else {
 				LocalDate registrationOpen = event.getRegistrationOpen();
@@ -183,7 +183,6 @@ public class EventController {
 	public void importRegistrationData(ActionRequest request, ActionResponse response) throws IOException {
 		
 		Integer eventId = (Integer) request.getContext().get("_event_id");
-		System.out.println(eventId);
 		LinkedHashMap<String, Object> map = (LinkedHashMap<String, Object>) request.getContext().get("metaFile");
 		MetaFile dataFile = Beans.get(MetaFileRepository.class).find(((Integer) map.get("id")).longValue());
 		File file = MetaFiles.getPath(dataFile).toFile();
