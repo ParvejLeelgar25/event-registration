@@ -89,4 +89,32 @@
   	<error message="Exceed duration between open and close registration dates" if="java.time.temporal.ChronoUnit.DAYS.between(registrationOpen, registrationClose) &gt;= beforeDays" action="action-attr"/>
   </action-validate> -->
   
+  <cards name="event-card" model="com.axelor.event.registration.db.Event" title="Event">
+  	<field name="reference"/>
+  	<field name="startDate"/>
+  	<field name="endDate"/>
+  	<field name="registrationOpen"/>
+  	<field name="registrationClose"/>
+  	<field name="eventFees"/>
+  	<field name="capacity"/>
+  	<field name="address"/>
+  	<field name="description"/>
+  	<template><![CDATA[
+  		<div class="span6">
+  			<strong>Reference: </strong>{{reference}}<br>
+      		<strong>Start Date: </strong><span>{{startDate|date:'yyyy-MM-dd HH:mm'}}</span><br>
+      		<strong>End Date: </strong><span>{{endDate|date:'yyyy-MM-dd HH:mm'}}</span><br>
+      		<strong>Registration Open : </strong><span>{{registrationOpen|date:'yyyy-MM-dd'}}</span><br>
+      		<strong>Registration Close : </strong><span>{{registrationClose|date:'yyyy-MM-dd'}}</span><br>
+  		</div>
+  		
+  		<div class="span6">
+  			<strong>Event Fees: </strong>{{eventFees}}<br>
+  			<strong>Capacity: </strong>{{capacity}}<br>
+  			<strong>Address: </strong>{{address.fullName}}<br>
+  			<strong>Discription: </strong>{{discription}}<br>
+  		</div>
+  	]]></template>
+  </cards>
+  
   </object-views>

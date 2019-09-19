@@ -12,6 +12,8 @@
 		model="com.axelor.event.registration.db.Event">
 		<view type="grid" name="event-grid" />
 		<view type="form" name="event-form" />
+		<view type="cards" name="event-card" />
+		<context name="json-enhance" expr="true" />
 	</action-view>
 	
   <menuitem title="Event Registration" name="event-registration-root-event-registration" parent="event-registration-root" action="event.registration.root.event.registration"/>
