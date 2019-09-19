@@ -3,6 +3,7 @@ package com.axelor.event.registration.db.service;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.Period;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
 
@@ -17,7 +18,7 @@ public class EventRegistrationServiceImpl implements EventRegistrationService {
 		if (event.getDiscountList() != null) {
 			LocalDate registrationDate = eventRegistration.getRegistrationDate().toLocalDate();
 			List<Discount> discountList = event.getDiscountList();
-			long days = ChronoUnit.DAYS.between(registrationDate, event.getRegistrationClose());
+			int days = Period.between(registrationDate, event.getRegistrationClose()).getDays();
 			BigDecimal discountAmount = BigDecimal.ZERO;
 			for (Discount discount : discountList) {
 				if (discount.getBeforeDays() <= days && discount.getDiscountAmount().compareTo(discountAmount) == 1) {

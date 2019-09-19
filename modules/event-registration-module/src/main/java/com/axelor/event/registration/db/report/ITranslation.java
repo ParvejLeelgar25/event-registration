@@ -14,10 +14,10 @@ public interface ITranslation {
 	
 	public static final String REGISTRATION_OPEN = /*$$(*/ "Registration Open should not be ahead of registration close"; /*)*/
 	
-	public static final String REGISTRATION_CLOSE = /*$$(*/ "Registration close date must be before event start date"; /*)*/
+	public static final String REGISTRATION_CLOSE = /*$$(*/ "Registration close should not be ahead or equal to start date"; /*)*/
 	
 	public static final String BEFORE_DAYS = /*$$(*/ "Exceed duration between open and close registration dates"; /*)*/
 	
-	public static final String START_DATE_BEFORE = /*$$(*/ "Registration Open should not be ahead of start date"; /*)*/
+	public static final String START_DATE_BEFORE = /*$$(*/ "Registration Open should not be ahead or equal to start date"; /*)*/
 
 }

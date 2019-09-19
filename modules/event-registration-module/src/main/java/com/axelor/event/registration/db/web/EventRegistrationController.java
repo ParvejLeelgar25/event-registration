@@ -72,7 +72,6 @@ public class EventRegistrationController {
 				LocalDate registrationClose = event.getRegistrationClose();
 				LocalDateTime registrationDateTime = eventRegistration.getRegistrationDate();
 				if (registrationDateTime != null) {
-
 					LocalDate registrationDate = registrationDateTime.toLocalDate();
 					if (registrationOpen != null && registrationClose != null && registrationDate != null
 							&& registrationDate.isBefore(registrationClose)

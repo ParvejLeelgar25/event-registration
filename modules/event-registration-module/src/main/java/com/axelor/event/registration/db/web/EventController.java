@@ -6,6 +6,7 @@ import java.math.BigDecimal;
 import java.nio.file.Path;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.Period;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -45,75 +46,73 @@ import com.axelor.rpc.ActionResponse;
 import com.google.common.io.Files;
 import com.google.inject.Inject;
 
-
 public class EventController {
-	@Inject private EventService eventService;
-	@Inject private MessageService messageService;
-	
+	@Inject
+	private EventService eventService;
+	@Inject
+	private MessageService messageService;
+
 	public void validation(ActionRequest request, ActionResponse response) {
 		Event event = request.getContext().asType(Event.class);
-		if (event.getCapacity() < event.getTotalEntry()) {
-			response.setError(I18n.get(ITranslation.CAPACITY_EXCEED));
-		} else {
-			LocalDate registrationOpen = event.getRegistrationOpen();
-			LocalDate registrationClose = event.getRegistrationClose();
-			if (event.getEventRegistrationList() != null) {
-				for (EventRegistration eventRegistration : event.getEventRegistrationList()) {
-					if (eventRegistration.getRegistrationDate() != null) {
-						LocalDate registrationDate = eventRegistration.getRegistrationDate().toLocalDate();
-						if (registrationOpen != null && registrationClose != null && registrationDate != null
-								&& registrationDate.isBefore(registrationOpen)
-								|| registrationDate.isAfter(registrationClose)) {
-							response.setError(I18n.get(ITranslation.DATE_BETWEEN));
+		if(event.getEventRegistrationList() != null) {
+			if (event.getCapacity() >= event.getEventRegistrationList().size()) {
+				LocalDate registrationOpen = event.getRegistrationOpen();
+				LocalDate registrationClose = event.getRegistrationClose();
+				if (event.getEventRegistrationList() != null) {
+					for (EventRegistration eventRegistration : event.getEventRegistrationList()) {
+						if (eventRegistration.getRegistrationDate() != null) {
+							LocalDate registrationDate = eventRegistration.getRegistrationDate().toLocalDate();
+							if (registrationOpen != null && registrationClose != null && registrationDate != null
+									&& registrationDate.isBefore(registrationOpen)
+									|| registrationDate.isAfter(registrationClose)) {
+								response.setError(I18n.get(ITranslation.DATE_BETWEEN));
+							}
+						} else {
+							response.setError(I18n.get(ITranslation.MISSING_REGISTRATION_DATE));
 						}
-					} else {
-						response.setError(I18n.get(ITranslation.MISSING_REGISTRATION_DATE));
 					}
 				}
+			} else {
+				response.setError(I18n.get(ITranslation.CAPACITY_EXCEED));
 			}
 		}
 	}
 
 	public void dateValidation(ActionRequest request, ActionResponse response) {
 		Event event = request.getContext().asType(Event.class);
+		LocalDateTime startDateTime = event.getStartDate();
+		LocalDateTime endDateTime = event.getEndDate();
+		LocalDate registrationOpen = event.getRegistrationOpen();
+		LocalDate registrationClose = event.getRegistrationClose();
 		LocalDate startDate = null;
 		LocalDate endDate = null;
 
-		if (event.getStartDate() != null) {
-			startDate = event.getStartDate().toLocalDate();
-			if (event.getEndDate() != null) {
-				endDate = event.getEndDate().toLocalDate();
-				if (startDate.isAfter(endDate)) {
-					response.setFlash(I18n.get(ITranslation.START_DATE));
-					response.setValue("startDate", null);
-					response.setValue("endDate", null);
-				}
+		if (startDateTime != null) {
+			startDate = startDateTime.toLocalDate();
+		}
+
+		if (event.getStartDate() != null && event.getEndDate() != null) {
+			endDate = event.getEndDate().toLocalDate();
+			if (startDate.isAfter(endDate)) {
+				response.setError(I18n.get(ITranslation.START_DATE));
 			}
 		}
 
-		LocalDate registrationOpen = event.getRegistrationOpen();
-		LocalDate registrationClose = event.getRegistrationClose();
+		if (registrationOpen != null && startDateTime != null) {
+			if (registrationOpen.isAfter(startDate) || registrationOpen.isEqual(startDate)) {
+				response.setError(I18n.get(ITranslation.START_DATE_BEFORE));
+			}
+		}
+
+		if (registrationClose != null && startDateTime != null) {
+			if (registrationClose.isAfter(startDate) || registrationClose.isEqual(startDate)) {
+				response.setError(I18n.get(ITranslation.REGISTRATION_CLOSE));
+			}
+		}
+
 		if (registrationOpen != null && registrationClose != null) {
 			if (registrationOpen.isAfter(registrationClose)) {
-				response.setFlash(I18n.get(ITranslation.REGISTRATION_OPEN));
-				response.setValue("registrationOpen", null);
-				response.setValue("registrationClose", null);
-			}
-		}
-
-		if (registrationClose != null && startDate != null) {
-			if (registrationClose.isAfter(startDate)) {
-				response.setFlash(I18n.get(ITranslation.REGISTRATION_CLOSE));
-				response.setValue("startDate", null);
-				response.setValue("registrationClose", null);
-			}
-		}
-		
-		if(registrationOpen != null && startDate != null) {
-			if(registrationOpen.isAfter(startDate)) {
-				response.setFlash(I18n.get(ITranslation.START_DATE_BEFORE));
-				response.setValue("startDate", null);
-				response.setValue("registrationOpen", null);
+				response.setError(I18n.get(ITranslation.REGISTRATION_OPEN));
 			}
 		}
 	}
@@ -122,11 +121,11 @@ public class EventController {
 		Event event = request.getContext().asType(Event.class);
 		LocalDate registrationOpen = event.getRegistrationOpen();
 		LocalDate registrationClose = event.getRegistrationClose();
-		long days = ChronoUnit.DAYS.between(registrationOpen, registrationClose);
+		int days = Period.between(registrationOpen, registrationClose).getDays();
 
 		if (event.getDiscountList() != null) {
 			List<Discount> discountList = event.getDiscountList();
-			int count = discountList.size()-1;
+			int count = discountList.size() - 1;
 			for (Discount discount : discountList) {
 				long beforeDays = discount.getBeforeDays();
 				if (beforeDays > days) {
@@ -144,57 +143,60 @@ public class EventController {
 		Event event = request.getContext().asType(Event.class);
 		if (event.getEventRegistrationList() != null) {
 			List<EventRegistration> eventRegistrationsList = event.getEventRegistrationList();
-			if (event.getCapacity() < event.getEventRegistrationList().size()) {
-				response.setError(I18n.get(ITranslation.CAPACITY_EXCEED));
-			} else {
+			if (event.getCapacity() >= event.getEventRegistrationList().size()) {
 				LocalDate registrationOpen = event.getRegistrationOpen();
 				LocalDate registrationClose = event.getRegistrationClose();
-				if(eventRegistrationsList.size() > 0) {
-					LocalDateTime registrationDateTime = event.getEventRegistrationList().get(eventRegistrationsList.size()-1).getRegistrationDate();
+				if (eventRegistrationsList.size() > 0) {
+					LocalDateTime registrationDateTime = event.getEventRegistrationList()
+							.get(eventRegistrationsList.size() - 1).getRegistrationDate();
 					if (registrationDateTime != null) {
 						LocalDate registrationDate = registrationDateTime.toLocalDate();
 						if (registrationOpen != null && registrationClose != null && registrationDate != null
 								&& registrationDate.isBefore(registrationOpen)
 								|| registrationDate.isAfter(registrationClose)) {
 							response.setError(I18n.get(ITranslation.DATE_BETWEEN));
-						} 
+						}
 					} else {
 						response.setError(I18n.get(ITranslation.MISSING_REGISTRATION_DATE));
 					}
-				}	
+				}
+			} else {
+				response.setError(I18n.get(ITranslation.CAPACITY_EXCEED));
 			}
 		}
 	}
-	
+
 	public void eventCalculation(ActionRequest request, ActionResponse response) {
-		
+
 		Event event = request.getContext().asType(Event.class);
 		eventService.eventCalculation(event);
 		response.setValue("amountCollected", event.getAmountCollected());
 		response.setValue("totalDiscount", event.getTotalDiscount());
 	}
-	
-	public void sendEmail(ActionRequest request, ActionResponse response) throws MessagingException, IOException, AxelorException {
-		
+
+	public void sendEmail(ActionRequest request, ActionResponse response)
+			throws MessagingException, IOException, AxelorException {
+
 		Event event = request.getContext().asType(Event.class);
 		eventService.sendEmail(event);
+		response.setFlash("Emails are sending");
 	}
-	
+
 	public void importRegistrationData(ActionRequest request, ActionResponse response) throws IOException {
-		
+
 		Integer eventId = (Integer) request.getContext().get("_event_id");
 		LinkedHashMap<String, Object> map = (LinkedHashMap<String, Object>) request.getContext().get("metaFile");
 		MetaFile dataFile = Beans.get(MetaFileRepository.class).find(((Integer) map.get("id")).longValue());
 		File file = MetaFiles.getPath(dataFile).toFile();
 		String dataFileArray[] = dataFile.getFileName().split("\\.");
-	    String dataFileType = dataFileArray[dataFileArray.length - 1];
-	    
-	     if(dataFileType.equals("csv")) {
-	    	eventService.importRegistrationData(eventId,dataFile);
-	    } else {
-	    	response.setError("Please Select CSV file");
-	    }
-	     response.setCanClose(true);
+		String dataFileType = dataFileArray[dataFileArray.length - 1];
+
+		if (dataFileType.equals("csv")) {
+			eventService.importRegistrationData(eventId, dataFile);
+			response.setFlash("Data Imported");
+		} else {
+			response.setError("Please Select CSV file");
+		}
+		response.setCanClose(true);
 	}
 }
-

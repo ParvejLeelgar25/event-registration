@@ -23,9 +23,8 @@ public class ImportRegistration {
 
 	public Object importRegistration(Object bean, Map<String, Object> values) {
 
-		/* assert bean instanceof Event; */
 		assert bean instanceof EventRegistration;
-		/* Event event = (Event) bean; */
+
 		EventRegistration eventRegistration = (EventRegistration) bean;
 		Event event = eventRegistration.getEvent();
 		if (event.getCapacity() > event.getTotalEntry()) {
@@ -43,15 +42,15 @@ public class ImportRegistration {
 							event.getTotalDiscount().add(event.getEventFees().subtract(eventRegistration.getAmount())));
 				} else {
 					eventRegistration = null;
-					LOG.error("Error when importing registration :");
+					LOG.error("Error when importing registration");
 				}
 			} else {
 				eventRegistration = null;
-				LOG.error("Error when importing registration :");
+				LOG.error("Error when importing registration");
 			}
 		} else {
 			eventRegistration = null;
-			LOG.error("Error when importing registration :");
+			LOG.error("Error when importing registration");
 		}
 		return eventRegistration;
 	}

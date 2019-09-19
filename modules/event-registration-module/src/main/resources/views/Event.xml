@@ -8,19 +8,19 @@
   	<field name="reference"/>
   </grid>
   
-  <form model="com.axelor.event.registration.db.Event" title="Event" name="event-form" width="large" onSave="action-event-method-on-save">
+  <form model="com.axelor.event.registration.db.Event" title="Event" name="event-form" width="large" onSave="action-event-method-date-on-change,action-event-method-on-save">
   <toolbar>
-  	<button name="reportbtn" onClick="save,action-event-report-reportbtn-on-click" title="Report"/>
-  	<button name="sendEmail" onClick="action-event-method-send-email" title="Send Email"/>
-  	<button name="importRegistrationbtn" onClick="action-event-view-import-event-registration" title="Import Registration"/>
+  	<button name="reportbtn" onClick="action-event-report-reportbtn-on-click" title="Report" hideIf="id == null" prompt="Are you sure event is saved otherwise you get a blank report"/>
+  	<button name="sendEmail" onClick="action-event-method-send-email" title="Send Email" hideIf="id == null"/>
+  	<button name="importRegistrationbtn" onClick="action-event-view-import-event-registration" title="Import Registration" readonlyIf="id == null"/>
   </toolbar>
   	<panel name="event-panel" title="Event">
   		<field name="reference"/>
   		<field name="address" form-view="address-form" canNew="true"/>
-  		<field name="startDate" onChange="action-event-method-date-on-change" readonlyIf="startDate != null &amp;&amp; eventRegistrationList.length > 0"/>
-  		<field name="endDate" onChange="action-event-method-date-on-change" readonlyIf="endDate &amp;&amp; eventRegistrationList.length > 0" />
-  		<field name="registrationOpen" onChange="action-event-method-date-on-change" readonlyIf="registrationOpen &amp;&amp; eventRegistrationList.length > 0 &amp;&amp; discountList.length > 0"/>
-  		<field name="registrationClose" onChange="action-event-method-date-on-change" readonlyIf="registrationClose != null &amp;&amp; eventRegistrationList.length > 0 &amp;&amp; discountList.length > 0"/>
+  		<field name="startDate" onChange="action-event-method-date-on-change" readonlyIf="eventRegistrationList.length > 0"/>
+  		<field name="endDate" onChange="action-event-method-date-on-change" readonlyIf="eventRegistrationList.length > 0" />
+  		<field name="registrationOpen" onChange="action-event-method-date-on-change" readonlyIf="eventRegistrationList.length > 0 || discountList.length > 0"/>
+  		<field name="registrationClose" onChange="action-event-method-date-on-change" readonlyIf="eventRegistrationList.length > 0 || discountList.length > 0"/>
   		<field name="capacity" readonlyIf="eventRegistrationList.length > 0"/>
   		<field name="eventFees" readonlyIf="discountList.length > 0"/>
   		<field name="description" widget="html"/>
