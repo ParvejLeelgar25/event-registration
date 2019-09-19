@@ -13,6 +13,7 @@
 		<view type="grid" name="event-grid" />
 		<view type="form" name="event-form" />
 		<view type="cards" name="event-card" />
+		<view type="calendar" name="event-calendar"/>
 		<context name="json-enhance" expr="true" />
 	</action-view>
 	

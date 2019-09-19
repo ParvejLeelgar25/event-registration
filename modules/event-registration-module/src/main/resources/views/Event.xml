@@ -117,4 +117,8 @@
   	]]></template>
   </cards>
   
+   <calendar name="event-calendar"  title="Events"  model="com.axelor.event.registration.db.Event"  eventStart="startDate"  eventStop="endDate" >
+  			<field name="reference" />
+	</calendar>
+  
   </object-views>
