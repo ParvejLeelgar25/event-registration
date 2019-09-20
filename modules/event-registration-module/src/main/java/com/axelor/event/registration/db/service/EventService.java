@@ -12,7 +12,7 @@ public interface EventService {
 
 	public void eventCalculation(Event event);
 	
-	public void sendEmail(Event event) throws MessagingException, IOException, AxelorException;
+	public Boolean sendEmail(Event event) throws MessagingException, IOException, AxelorException;
 	
 	public void importRegistrationData(Integer event_id, MetaFile dataFile) throws IOException;
 }

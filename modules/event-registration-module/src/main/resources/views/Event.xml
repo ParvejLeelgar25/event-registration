@@ -22,7 +22,7 @@
   		<field name="registrationOpen" onChange="action-event-method-date-on-change" readonlyIf="eventRegistrationList.length > 0 || discountList.length > 0"/>
   		<field name="registrationClose" onChange="action-event-method-date-on-change" readonlyIf="eventRegistrationList.length > 0 || discountList.length > 0"/>
   		<field name="capacity" readonlyIf="eventRegistrationList.length > 0"/>
-  		<field name="eventFees" readonlyIf="discountList.length > 0"/>
+  		<field name="eventFees" readonlyIf="discountList.length > 0  || eventRegistrationList.length > 0"/>
   		<field name="description" widget="html"/>
   		<field name="totalEntry"/>
   		<field name="amountCollected"/>

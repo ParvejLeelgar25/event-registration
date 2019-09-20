@@ -19,5 +19,5 @@ public interface ITranslation {
 	public static final String BEFORE_DAYS = /*$$(*/ "Exceed duration between open and close registration dates"; /*)*/
 	
 	public static final String START_DATE_BEFORE = /*$$(*/ "Registration Open should not be ahead or equal to start date"; /*)*/
-
+	
 }

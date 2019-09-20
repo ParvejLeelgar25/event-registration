@@ -50,7 +50,7 @@ public class EventServiceImpl implements EventService {
 	}
 
 	@Override
-	public void sendEmail(Event event) throws MessagingException, IOException, AxelorException {
+	public Boolean sendEmail(Event event) throws MessagingException, IOException, AxelorException {
 		Set<EmailAddress> emailAddressSet = new HashSet<EmailAddress>();
 		if (event.getEventRegistrationList() != null) {
 			for (EventRegistration eventRegistration : event.getEventRegistrationList()) {
@@ -62,18 +62,18 @@ public class EventServiceImpl implements EventService {
 				}
 			}
 		}
-
+		Boolean checkEmailList = false;
 		if (!emailAddressSet.isEmpty()) {
+			checkEmailList = true;
 			Message message = new Message();
 			message.setMailAccount(
-					Beans.get(EmailAccountRepository.class).all().filter("self.isValid = ?1", 't').fetchOne());
+					Beans.get(EmailAccountRepository.class).all().filter("self.isValid = ?1", true).fetchOne());
 			message.setContent("This is Regisgration Information mail");
 			message.setToEmailAddressSet(emailAddressSet);
 			message.setSubject("Registration Regarding");
-
 			messageService.sendByEmail(message);
 		}
-
+		return checkEmailList;
 	}
 
 	@Override
@@ -91,8 +91,6 @@ public class EventServiceImpl implements EventService {
 				csvFile.getParent());
 		importer.setContext(importContext);
 		importer.run();
-		
-		
 	}
 
 }

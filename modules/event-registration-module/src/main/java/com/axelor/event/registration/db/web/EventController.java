@@ -178,8 +178,16 @@ public class EventController {
 			throws MessagingException, IOException, AxelorException {
 
 		Event event = request.getContext().asType(Event.class);
-		eventService.sendEmail(event);
-		response.setFlash("Emails are sending");
+		if(Beans.get(EmailAccountRepository.class).all().filter("self.isValid = ?1", true).fetchOne() != null){
+			Boolean checkEmailList = eventService.sendEmail(event);
+			if(checkEmailList) {
+				response.setFlash("Emails are sending");
+			} else {
+				response.setFlash("No recieptant found");
+			}
+		} else {
+			response.setError("Please configure mail account for send mail");
+		}
 	}
 
 	public void importRegistrationData(ActionRequest request, ActionResponse response) throws IOException {
