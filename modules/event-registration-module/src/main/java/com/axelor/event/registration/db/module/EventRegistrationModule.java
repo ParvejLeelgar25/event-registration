@@ -13,6 +13,8 @@ import com.axelor.event.registration.db.service.EventRegistrationService;
 import com.axelor.event.registration.db.service.EventRegistrationServiceImpl;
 import com.axelor.event.registration.db.service.EventService;
 import com.axelor.event.registration.db.service.EventServiceImpl;
+import com.axelor.event.registration.db.service.ImportEventRegistrationService;
+import com.axelor.event.registration.db.service.ImportEventRegistrationServiceImpl;
 
 public class EventRegistrationModule extends AxelorModule{
 
@@ -23,6 +25,7 @@ public class EventRegistrationModule extends AxelorModule{
 		bind(EventRegistrationRepository.class).to(EventRegistrationManageRepository.class);
 		bind(EventService.class).to(EventServiceImpl.class);
 		bind(EventRegistrationService.class).to(EventRegistrationServiceImpl.class);
+		bind(ImportEventRegistrationService.class).to(ImportEventRegistrationServiceImpl.class);
 		
 	}
 

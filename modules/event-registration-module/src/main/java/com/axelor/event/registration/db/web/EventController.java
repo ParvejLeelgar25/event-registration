@@ -54,7 +54,7 @@ public class EventController {
 
 	public void validation(ActionRequest request, ActionResponse response) {
 		Event event = request.getContext().asType(Event.class);
-		if(event.getEventRegistrationList() != null) {
+		if (event.getEventRegistrationList() != null) {
 			if (event.getCapacity() >= event.getEventRegistrationList().size()) {
 				LocalDate registrationOpen = event.getRegistrationOpen();
 				LocalDate registrationClose = event.getRegistrationClose();
@@ -178,9 +178,9 @@ public class EventController {
 			throws MessagingException, IOException, AxelorException {
 
 		Event event = request.getContext().asType(Event.class);
-		if(Beans.get(EmailAccountRepository.class).all().filter("self.isValid = ?1", true).fetchOne() != null){
+		if (Beans.get(EmailAccountRepository.class).all().filter("self.isValid = ?1", true).fetchOne() != null) {
 			Boolean checkEmailList = eventService.sendEmail(event);
-			if(checkEmailList) {
+			if (checkEmailList) {
 				response.setFlash("Emails are sending");
 			} else {
 				response.setFlash("No recieptant found");
@@ -188,23 +188,5 @@ public class EventController {
 		} else {
 			response.setError("Please configure mail account for send mail");
 		}
-	}
-
-	public void importRegistrationData(ActionRequest request, ActionResponse response) throws IOException {
-
-		Integer eventId = (Integer) request.getContext().get("_event_id");
-		LinkedHashMap<String, Object> map = (LinkedHashMap<String, Object>) request.getContext().get("metaFile");
-		MetaFile dataFile = Beans.get(MetaFileRepository.class).find(((Integer) map.get("id")).longValue());
-		File file = MetaFiles.getPath(dataFile).toFile();
-		String dataFileArray[] = dataFile.getFileName().split("\\.");
-		String dataFileType = dataFileArray[dataFileArray.length - 1];
-
-		if (dataFileType.equals("csv")) {
-			eventService.importRegistrationData(eventId, dataFile);
-			response.setFlash("Data Imported");
-		} else {
-			response.setError("Please Select CSV file");
-		}
-		response.setCanClose(true);
 	}
 }

@@ -10,7 +10,7 @@
 	</adapter>
 
 
-	<input file="ImportRegistration.csv" separator="," type="com.axelor.event.registration.db.EventRegistration" call="com.axelor.event.registration.db.service.ImportRegistration:importRegistration">
+	<input file="ImportRegistration.csv" separator="," type="com.axelor.event.registration.db.EventRegistration" call="com.axelor.event.registration.db.service.ImportEventRegistrationService:importRegistration">
 		<bind to="event" search="self.id = :_eventId" update="true" />
 		<bind to="registrationDate" column="registrationDate" adapter="LocalDateTime" />
 	</input>

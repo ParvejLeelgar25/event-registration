@@ -82,7 +82,7 @@
     </action-view>
     
   <action-method name="action-event-method-import-button">
-  	<call class="com.axelor.event.registration.db.web.EventController" method="importRegistrationData"/>
+  	<call class="com.axelor.event.registration.db.web.ImportEventRegistrationController" method="importRegistrationData"/>
   </action-method>
   
 <!--   <action-validate name="action-event-validate-on-discount-list">

@@ -11,8 +11,6 @@ import com.axelor.meta.db.MetaFile;
 public interface EventService {
 
 	public void eventCalculation(Event event);
-	
+
 	public Boolean sendEmail(Event event) throws MessagingException, IOException, AxelorException;
-	
-	public void importRegistrationData(Integer event_id, MetaFile dataFile) throws IOException;
 }

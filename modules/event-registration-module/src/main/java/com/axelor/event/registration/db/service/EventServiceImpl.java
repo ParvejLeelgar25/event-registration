@@ -1,7 +1,9 @@
 package com.axelor.event.registration.db.service;
 
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -11,6 +13,9 @@ import java.util.Set;
 
 import javax.mail.MessagingException;
 
+import org.apache.commons.io.IOUtils;
+
+import com.axelor.app.AppSettings;
 import com.axelor.apps.message.db.EmailAddress;
 import com.axelor.apps.message.db.Message;
 import com.axelor.apps.message.db.repo.EmailAccountRepository;
@@ -75,22 +80,4 @@ public class EventServiceImpl implements EventService {
 		}
 		return checkEmailList;
 	}
-
-	@Override
-	public void importRegistrationData(Integer eventId, MetaFile dataFile) throws IOException {
-
-		File csvFile = new File("/home/axelor/.axelor/attachments/", "ImportRegistration.csv");
-		if (dataFile != null) {
-			Files.copy(MetaFiles.getPath(dataFile).toFile(), csvFile);
-		}
-		Map<String, Object> importContext = new HashMap<String, Object>();
-		importContext.put("_eventId", eventId);
-		 
-		CSVImporter importer = new CSVImporter(
-				"/home/axelor/eclipse-workspace/Event Registration Workspace/event-registration/modules/event-registration-module/src/main/resources/data-init/input-config.xml",
-				csvFile.getParent());
-		importer.setContext(importContext);
-		importer.run();
-	}
-
 }
