@@ -79,9 +79,16 @@ public class EventController {
 	}
 
 	public void dateValidation(ActionRequest request, ActionResponse response) {
-		Event event = request.getContext().asType(Event.class);
+		
+		Event event;
+		if(request.getContext().getParent() != null) {
+			event = request.getContext().getParent().asType(Event.class);
+		}
+		else {
+			event = request.getContext().asType(Event.class);
+		}
+		
 		LocalDateTime startDateTime = event.getStartDate();
-		LocalDateTime endDateTime = event.getEndDate();
 		LocalDate registrationOpen = event.getRegistrationOpen();
 		LocalDate registrationClose = event.getRegistrationClose();
 		LocalDate startDate = null;

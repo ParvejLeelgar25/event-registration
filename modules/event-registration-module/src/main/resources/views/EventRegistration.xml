@@ -33,6 +33,7 @@
   </action-method>
   
   <action-group name="action-event-registration-group-registration-date-on-change">
+    <action name="action-event-method-date-on-change" if="__parent__"/>
   	<action name="action-event-registration-method-registration-date-on-change" if="__parent__"/>
   	<action name="action-event-registration-method-registration-date-on-change-no-parent" if="!__parent__"/>
   </action-group>

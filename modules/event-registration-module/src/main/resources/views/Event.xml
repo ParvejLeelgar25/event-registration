@@ -78,7 +78,6 @@
     	<view-param name="show-confirm" value="false"/>
   		<view-param name="popup-save" value="false"/>
   		<view-param name="popup" value="reload"/>
-  		<context name="_event_id" expr="eval:id" />
     </action-view>
     
   <action-method name="action-event-method-import-button">

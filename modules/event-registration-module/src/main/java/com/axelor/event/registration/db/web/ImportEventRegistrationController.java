@@ -19,7 +19,7 @@ public class ImportEventRegistrationController {
 
 	public void importRegistrationData(ActionRequest request, ActionResponse response) {
 
-		Integer eventId = (Integer) request.getContext().get("_event_id");
+		Integer eventId = (Integer) request.getContext().get("_id");
 		LinkedHashMap<String, Object> map = (LinkedHashMap<String, Object>) request.getContext().get("metaFile");
 		MetaFile dataFile = Beans.get(MetaFileRepository.class).find(((Integer) map.get("id")).longValue());
 		File file = MetaFiles.getPath(dataFile).toFile();
