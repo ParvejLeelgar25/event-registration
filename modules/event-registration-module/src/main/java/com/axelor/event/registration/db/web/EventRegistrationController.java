@@ -65,32 +65,25 @@ public class EventRegistrationController {
 
 	public void calculationNoParent(ActionRequest request, ActionResponse response) {
 		EventRegistration eventRegistration = request.getContext().asType(EventRegistration.class);
-		if (eventRegistration.getEvent() != null) {
-			if (eventRegistration.getRegistrationDate() != null) {
-				Event event = eventRegistration.getEvent();
-				LocalDate registrationOpen = event.getRegistrationOpen();
-				LocalDate registrationClose = event.getRegistrationClose();
-				LocalDateTime registrationDateTime = eventRegistration.getRegistrationDate();
-				if (registrationDateTime != null) {
-					LocalDate registrationDate = registrationDateTime.toLocalDate();
-					if (registrationOpen != null && registrationClose != null && registrationDate != null
-							&& registrationDate.isBefore(registrationClose)
-							&& registrationDate.isAfter(registrationOpen)) {
-						eventRegistrationService.calculation(eventRegistration, event);
-						response.setValue("amount", eventRegistration.getAmount());
-					} else {
-						response.setError(I18n.get(ITranslation.DATE_BETWEEN));
-					}
+		LocalDateTime registrationDateTime = eventRegistration.getRegistrationDate();
+
+		if (registrationDateTime != null && eventRegistration.getEvent() != null) {
+			Event event = eventRegistration.getEvent();
+			LocalDate registrationOpen = event.getRegistrationOpen();
+			LocalDate registrationClose = event.getRegistrationClose();
+			LocalDate registrationDate = registrationDateTime.toLocalDate();
+
+			if (registrationOpen != null && registrationClose != null) {
+				if ((registrationDate.isAfter(registrationOpen) && registrationDate.isBefore(registrationClose))
+						|| registrationDate.isEqual(registrationOpen) || registrationDate.isEqual(registrationClose)) {
+					eventRegistrationService.calculation(eventRegistration, event);
+					response.setValue("amount", eventRegistration.getAmount());
 				} else {
-					response.setError(I18n.get(ITranslation.MISSING_REGISTRATION_DATE));
+					response.setError(I18n.get(ITranslation.DATE_BETWEEN));
 				}
 			} else {
-				response.setError(I18n.get(ITranslation.MISSING_FIELD));
+				response.setError("Please fill registration open and close date for event");
 			}
-		} else {
-			response.setError(I18n.get(ITranslation.MISSING_FIELD));
 		}
-
 	}
-
 }
