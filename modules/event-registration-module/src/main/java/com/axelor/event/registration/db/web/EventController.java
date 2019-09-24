@@ -181,12 +181,12 @@ public class EventController {
 		if (Beans.get(EmailAccountRepository.class).all().filter("self.isValid = ?1", true).fetchOne() != null) {
 			Boolean checkEmailList = eventService.sendEmail(event);
 			if (checkEmailList) {
-				response.setFlash("Emails are sending");
+				response.setFlash(I18n.get(ITranslation.EMAIL_SENDING));
 			} else {
-				response.setFlash("No recieptant found");
+				response.setFlash(I18n.get(ITranslation.NO_RECIEPTANT));
 			}
 		} else {
-			response.setError("Please configure mail account for send mail");
+			response.setError(I18n.get(ITranslation.MAIL_CONFIGURE));
 		}
 	}
 }

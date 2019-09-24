@@ -20,4 +20,14 @@ public interface ITranslation {
 	
 	public static final String START_DATE_BEFORE = /*$$(*/ "Registration Open should not be ahead or equal to start date"; /*)*/
 	
+	public static final String EMAIL_SENDING = /*$$(*/ "Emails are sending"; /*)*/
+	
+	public static final String NO_RECIEPTANT = /*$$(*/ "No recieptant found"; /*)*/
+	
+	public static final String MAIL_CONFIGURE = /*$$(*/ "Please configure mail account for send mail"; /*)*/
+	
+	public static final String DATA_IMPORT = /*$$(*/ "Data Imported"; /*)*/
+	
+	public static final String BAD_CSV_FILE = /*$$(*/ "Please Select CSV file"; /*)*/
+	
 }

@@ -446,11 +446,15 @@ where re.id = ?;]]></xml-property>
                 </structure>
             </list-property>
             <column id="20"/>
+            <column id="95"/>
             <column id="25"/>
+            <column id="104"/>
             <header>
                 <row id="14">
                     <cell id="15"/>
+                    <cell id="87"/>
                     <cell id="22"/>
+                    <cell id="96"/>
                 </row>
             </header>
             <detail>
@@ -458,13 +462,25 @@ where re.id = ?;]]></xml-property>
                     <cell id="17">
                         <text id="26">
                             <property name="contentType">html</property>
-                            <text-property name="content"><![CDATA[<STRONG>Reference  </STRONG><VALUE-OF>row["reference"]</VALUE-OF>]]></text-property>
+                            <text-property name="content"><![CDATA[<STRONG>Reference</STRONG>]]></text-property>
+                        </text>
+                    </cell>
+                    <cell id="88">
+                        <text id="105">
+                            <property name="contentType">html</property>
+                            <text-property name="content"><![CDATA[<VALUE-OF>row["reference"]</VALUE-OF>]]></text-property>
                         </text>
                     </cell>
                     <cell id="23">
                         <text id="27">
                             <property name="contentType">html</property>
-                            <text-property name="content"><![CDATA[<STRONG>Capacity  </STRONG><VALUE-OF>row["capacity"]</VALUE-OF>]]></text-property>
+                            <text-property name="content"><![CDATA[<STRONG>Capacity</STRONG>]]></text-property>
+                        </text>
+                    </cell>
+                    <cell id="97">
+                        <text id="110">
+                            <property name="contentType">html</property>
+                            <text-property name="content"><![CDATA[<VALUE-OF>row["capacity"]</VALUE-OF>]]></text-property>
                         </text>
                     </cell>
                 </row>
@@ -472,13 +488,25 @@ where re.id = ?;]]></xml-property>
                     <cell id="29">
                         <text id="34">
                             <property name="contentType">html</property>
-                            <text-property name="content"><![CDATA[<STRONG>Start Date  </STRONG><VALUE-OF format="dd/MM/yyyy">row["start_date"]</VALUE-OF>]]></text-property>
+                            <text-property name="content"><![CDATA[<STRONG>Start Date</STRONG>]]></text-property>
+                        </text>
+                    </cell>
+                    <cell id="89">
+                        <text id="106">
+                            <property name="contentType">html</property>
+                            <text-property name="content"><![CDATA[<VALUE-OF format="dd/MM/yyyy">row["start_date"]</VALUE-OF>]]></text-property>
                         </text>
                     </cell>
                     <cell id="30">
                         <text id="35">
                             <property name="contentType">html</property>
-                            <text-property name="content"><![CDATA[<STRONG>End Date  </STRONG><VALUE-OF format="dd/MM/yyyy">row["end_date"]</VALUE-OF>]]></text-property>
+                            <text-property name="content"><![CDATA[<STRONG>Total Entry</STRONG>]]></text-property>
+                        </text>
+                    </cell>
+                    <cell id="98">
+                        <text id="111">
+                            <property name="contentType">html</property>
+                            <text-property name="content"><![CDATA[<VALUE-OF>row["total_entry"]</VALUE-OF>]]></text-property>
                         </text>
                     </cell>
                 </row>
@@ -486,13 +514,25 @@ where re.id = ?;]]></xml-property>
                     <cell id="32">
                         <text id="36">
                             <property name="contentType">html</property>
-                            <text-property name="content"><![CDATA[<STRONG>Registration Open  </STRONG><VALUE-OF format="dd/MM/yyyy">row["registration_open"]</VALUE-OF>]]></text-property>
+                            <text-property name="content"><![CDATA[<STRONG>End Date</STRONG>]]></text-property>
+                        </text>
+                    </cell>
+                    <cell id="90">
+                        <text id="107">
+                            <property name="contentType">html</property>
+                            <text-property name="content"><![CDATA[<VALUE-OF format="dd/MM/yyyy">row["end_date"]</VALUE-OF>]]></text-property>
                         </text>
                     </cell>
                     <cell id="33">
                         <text id="37">
                             <property name="contentType">html</property>
-                            <text-property name="content"><![CDATA[<STRONG>Registration Close  </STRONG><VALUE-OF format="dd/MM/yyyy">row["registration_close"]</VALUE-OF>]]></text-property>
+                            <text-property name="content"><![CDATA[<STRONG>Event Fees</STRONG>]]></text-property>
+                        </text>
+                    </cell>
+                    <cell id="99">
+                        <text id="112">
+                            <property name="contentType">html</property>
+                            <text-property name="content"><![CDATA[<VALUE-OF>row["event_fees"]</VALUE-OF>]]></text-property>
                         </text>
                     </cell>
                 </row>
@@ -500,13 +540,25 @@ where re.id = ?;]]></xml-property>
                     <cell id="39">
                         <text id="44">
                             <property name="contentType">html</property>
-                            <text-property name="content"><![CDATA[<STRONG>Event Fees  </STRONG><VALUE-OF>row["event_fees"]</VALUE-OF>]]></text-property>
+                            <text-property name="content"><![CDATA[<STRONG>Registration Open</STRONG>]]></text-property>
+                        </text>
+                    </cell>
+                    <cell id="91">
+                        <text id="108">
+                            <property name="contentType">html</property>
+                            <text-property name="content"><![CDATA[<VALUE-OF format="dd/MM/yyyy">row["registration_open"]</VALUE-OF>]]></text-property>
                         </text>
                     </cell>
                     <cell id="40">
                         <text id="45">
                             <property name="contentType">html</property>
-                            <text-property name="content"><![CDATA[<STRONG>Total Entry  </STRONG><VALUE-OF>row["total_entry"]</VALUE-OF>]]></text-property>
+                            <text-property name="content"><![CDATA[<STRONG>Amount Collected</STRONG>]]></text-property>
+                        </text>
+                    </cell>
+                    <cell id="100">
+                        <text id="113">
+                            <property name="contentType">html</property>
+                            <text-property name="content"><![CDATA[<VALUE-OF>row["amount_collected"]</VALUE-OF>]]></text-property>
                         </text>
                     </cell>
                 </row>
@@ -514,13 +566,25 @@ where re.id = ?;]]></xml-property>
                     <cell id="42">
                         <text id="46">
                             <property name="contentType">html</property>
-                            <text-property name="content"><![CDATA[<STRONG>Amount Collected  </STRONG><VALUE-OF>row["amount_collected"]</VALUE-OF>]]></text-property>
+                            <text-property name="content"><![CDATA[<STRONG>Registration Close</STRONG>]]></text-property>
+                        </text>
+                    </cell>
+                    <cell id="92">
+                        <text id="109">
+                            <property name="contentType">html</property>
+                            <text-property name="content"><![CDATA[<VALUE-OF format="dd/MM/yyyy">row["registration_close"]</VALUE-OF>]]></text-property>
                         </text>
                     </cell>
                     <cell id="43">
                         <text id="47">
                             <property name="contentType">html</property>
-                            <text-property name="content"><![CDATA[<STRONG>Total Discount  </STRONG><VALUE-OF>row["total_discount"]</VALUE-OF>]]></text-property>
+                            <text-property name="content"><![CDATA[<STRONG>Total Discount</STRONG>]]></text-property>
+                        </text>
+                    </cell>
+                    <cell id="101">
+                        <text id="114">
+                            <property name="contentType">html</property>
+                            <text-property name="content"><![CDATA[<VALUE-OF>row["total_discount"]</VALUE-OF>]]></text-property>
                         </text>
                     </cell>
                 </row>
@@ -532,13 +596,17 @@ where re.id = ?;]]></xml-property>
 <br>]]></text-property>
                         </text>
                     </cell>
+                    <cell id="93"/>
                     <cell id="58"/>
+                    <cell id="102"/>
                 </row>
             </detail>
             <footer>
                 <row id="18">
                     <cell id="19"/>
+                    <cell id="94"/>
                     <cell id="24"/>
+                    <cell id="103"/>
                 </row>
             </footer>
         </table>
@@ -580,21 +648,21 @@ where re.id = ?;]]></xml-property>
                         <label id="73">
                             <property name="fontWeight">bold</property>
                             <property name="textAlign">left</property>
-                            <text-property name="text">Name</text-property>
+                            <text-property name="text">Registration Date</text-property>
                         </label>
                     </cell>
                     <cell id="69">
                         <label id="79">
                             <property name="fontWeight">bold</property>
                             <property name="textAlign">left</property>
-                            <text-property name="text">Email</text-property>
+                            <text-property name="text">Name</text-property>
                         </label>
                     </cell>
                     <cell id="65">
                         <label id="80">
                             <property name="fontWeight">bold</property>
                             <property name="textAlign">left</property>
-                            <text-property name="text">Amount</text-property>
+                            <text-property name="text">Email</text-property>
                         </label>
                     </cell>
                     <cell id="61">
@@ -603,7 +671,7 @@ where re.id = ?;]]></xml-property>
                         <label id="82">
                             <property name="fontWeight">bold</property>
                             <property name="textAlign">left</property>
-                            <text-property name="text">Registration Date</text-property>
+                            <text-property name="text">Amount</text-property>
                         </label>
                     </cell>
                 </row>
@@ -611,28 +679,29 @@ where re.id = ?;]]></xml-property>
             <detail>
                 <row id="51">
                     <cell id="52">
-                        <text-data id="83">
-                            <expression name="valueExpr">row["name"]</expression>
+                        <text id="115">
                             <property name="contentType">html</property>
-                        </text-data>
+                            <text-property name="content"><![CDATA[<VALUE-OF format="dd/MM/yyyy">row["registration_date"]</VALUE-OF>]]></text-property>
+                        </text>
                     </cell>
                     <cell id="70">
                         <text-data id="84">
-                            <expression name="valueExpr">row["email"]</expression>
+                            <expression name="valueExpr">row["name"]</expression>
                             <property name="contentType">html</property>
                         </text-data>
                     </cell>
                     <cell id="66">
                         <text-data id="85">
-                            <expression name="valueExpr">row["amount"]</expression>
+                            <expression name="valueExpr">row["email"]</expression>
                             <property name="contentType">html</property>
                         </text-data>
                     </cell>
                     <cell id="62">
-                        <text id="86">
+                        <text-data id="116">
+                            <property name="textAlign">left</property>
+                            <expression name="valueExpr">row["amount"]</expression>
                             <property name="contentType">html</property>
-                            <text-property name="content"><![CDATA[<VALUE-OF format="dd/MM/yyyy">row["registration_date"]</VALUE-OF>]]></text-property>
-                        </text>
+                        </text-data>
                     </cell>
                 </row>
             </detail>
